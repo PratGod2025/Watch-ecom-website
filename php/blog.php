@@ -1,400 +1,370 @@
+<?php include '../config.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta name="description" content="Blog Page of ecommerce website selling watches">
-  <meta name="keywords" content="Blog Page, website, watches">>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog - Time Hub</title>
   <link rel="stylesheet" href="../css/style.css">
   <style>
-    /* General Reset */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      margin: 0;
-      font-family: "Montserrat", sans-serif;
-      line-height: 1.6;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
       color: #333;
-      background-color: #f9f9f9;
     }
 
-    .container {
-      width: 85%;
-      margin: 0 auto;
-      max-width: 1200px;
+    /* Navbar */
+    .header { background: #202c2f; }
+    .navbar {
+      display: flex;
+      align-items: center;
+      padding: 15px 20px;
     }
+    nav { flex: 1; text-align: right; }
+    nav ul { display: inline-block; list-style: none; }
+    nav ul li { display: inline-block; margin-right: 20px; }
+    nav ul li a { color: #fff; text-decoration: none; font-size: 15px; }
+    nav ul li a:hover { color: #6EC6CA; }
 
-    /* Hero Section */
-    .hero {
-      background: tomato;
+    /* Hero */
+    .blog-hero {
+      background: linear-gradient(135deg, #202c2f, #34565c);
       color: white;
       text-align: center;
-      padding: 20px 16px;
+      padding: 80px 20px;
     }
-
-    .hero h1 {
+    .blog-hero h1 {
       font-size: 48px;
-      margin: 0;
+      margin-bottom: 15px;
+      letter-spacing: 2px;
+    }
+    .blog-hero p {
+      font-size: 18px;
+      color: #6EC6CA;
+      max-width: 600px;
+      margin: 0 auto;
     }
 
-    .hero p {
-      font-size: 20px;
+    /* Blog Grid */
+    .blog-container {
+      max-width: 1200px;
+      margin: 60px auto;
+      padding: 0 20px;
     }
 
-
-
-
-    /* Types Section */
-    .types-section {
-      padding: 48px 0;
-      background: #f4f4f4;
-    }
-
-    .types-section h2 {
+    .section-title {
+      font-size: 28px;
+      color: #202c2f;
+      margin-bottom: 40px;
       text-align: center;
-      margin-bottom: 32px;
+      position: relative;
+    }
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 80px;
+      height: 3px;
+      background: #6EC6CA;
+      margin: 10px auto 0;
+      border-radius: 2px;
     }
 
-    .cards {
-      display: flex;
-      gap: 24px;
-      flex-wrap: wrap;
-      justify-content: center;
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
     }
-
-    .card {
-      background: white;
-      padding: 24px;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      width: 280px;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    .card h3 {
-      margin-bottom: 8px;
-      color: #1f4037;
-    }
-
-    .card p {
-      color: #666;
-    }
-
-    /* Articles Section */
-    .articles-section article {
-      margin-bottom: 64px;
-      background: white;
-      padding: 24px;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    }
-
-    /* .one-image {
-  float: right;
-}
-
-.two-image {
-  float: right;
-}
-
-.three-image {
-  float: right;
-}
-
-.four-image {
-  float: right;
-}
-
-.five-image {
-  float: right;
-}
-
-.six-image {
-  float: right;
-} */
 
     .blog-card {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .blog-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.15);
     }
 
-    .articles-section article h3 {
-      margin-bottom: 13px;
-      color: #e30a0a;
+    .blog-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
     }
 
-    .articles-section article p {
-      color: #555;
-      line-height: 1.6;
+    .blog-card-body {
+      padding: 20px;
     }
 
-    /* Contact Section */
-    .contact-section {
-      background: lightskyblue;
-      padding: 2rem 0;
-      text-align: center;
-    }
-
-    .contact-section a {
-      color: #1f4037;
-      text-decoration: none;
+    .blog-category {
+      display: inline-block;
+      background: #6EC6CA;
+      color: white;
+      font-size: 11px;
       font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 12px;
     }
 
-    .contact-section a:hover {
+    .blog-card-body h3 {
+      font-size: 18px;
+      color: #202c2f;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .blog-card-body p {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    .blog-meta {
+      font-size: 12px;
+      color: #999;
+      margin-bottom: 15px;
+    }
+
+    .read-more {
+      display: inline-block;
+      background: #202c2f;
+      color: white;
+      padding: 8px 18px;
+      border-radius: 20px;
       text-decoration: none;
-      color: tomato;
+      font-size: 13px;
+      transition: background 0.3s;
     }
+    .read-more:hover { background: #6EC6CA; }
 
-    article {
+    /* Featured Blog - big card on top */
+    .featured-blog {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      margin-bottom: 60px;
+    }
+    .featured-blog img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      min-height: 350px;
+    }
+    .featured-blog-body {
+      padding: 40px;
       display: flex;
-      gap: 5px;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .featured-label {
+      display: inline-block;
+      background: #ffa000;
+      color: white;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 15px;
+    }
+    .featured-blog-body h2 {
+      font-size: 28px;
+      color: #202c2f;
+      margin-bottom: 15px;
+      line-height: 1.4;
+    }
+    .featured-blog-body p {
+      font-size: 15px;
+      color: #666;
+      line-height: 1.7;
+      margin-bottom: 20px;
     }
 
-    .blog_image {
-      height: 250px;
-      width: auto;
-      border-radius: 5px;
+    /* Footer */
+    .footer {
+      background: #202c2f;
+      color: #ccc;
+      padding: 40px 20px 20px;
+      margin-top: 60px;
     }
-
-    a {
-      color: blue;
+    .footer-container {
+      display: flex;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      gap: 30px;
+      flex-wrap: wrap;
     }
-
-    a:hover {
-      color: tomato;
-      font-weight: 600;
+    .footer-section h3 { color: #fff; margin-bottom: 15px; }
+    .footer-section ul { list-style: none; }
+    .footer-section ul li { margin-bottom: 8px; }
+    .footer-section ul li a { color: #ccc; text-decoration: none; }
+    .footer-section ul li a:hover { color: #6EC6CA; }
+    .footer-bottom {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #444;
+      font-size: 13px;
+      color: #888;
     }
   </style>
 </head>
 
 <body>
+
+  <!-- Navbar -->
   <div class="header">
     <div class="container">
       <div class="navbar">
-        <a href="../index.php"> <img class="logo" src="../images/logo.png" width="125px"></a>
+        <a href="../index.php">
+          <img class="logo" src="../images/logo.png" width="125px">
+        </a>
         <nav>
           <ul>
-            <li><a href="../index.php" class="a_color">Home</a></li>
-            <li><a href="./products.php" class="a_color">Products</a></li>
-            <li><a href="./blog.php" class="a_color">Blog</a></li>
-            <li><a href="./contact.html" class="a_color">Contact</a></li>
+            <li><a href="../index.php">Home</a></li>
+            <li><a href="./products.php">Products</a></li>
+            <li><a href="./blog.php">Blog</a></li>
+            <li><a href="./contact.php">Contact</a></li>
           </ul>
         </nav>
         <div style="position: relative">
-          <img src="../images/cart.png" alt="cart" width="30px" height="30px" style="cursor: pointer;">
+          <a href="./checkout.php">
+            <img src="../images/cart.png" alt="cart" width="30px" height="30px" style="cursor: pointer;">
+          </a>
           <span id="cart-counter"
             style="position: absolute; top: -10px; right: -10px; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 12px;">0</span>
         </div>
       </div>
-
     </div>
   </div>
+
+  <!-- Hero -->
+  <div class="blog-hero">
+    <h1>Time Hub Blog</h1>
+    <p>Explore the latest trends, technology and stories from the world of watches</p>
   </div>
 
+  <div class="blog-container">
 
-  <main>
-    <section id="about" class="about-section">
-      <div class="container"></div>
-    </section>
-
-    <section id="types" class="types-section">
-      <div class="container">
-        <h2>Types of Watches</h2>
-        <div class="cards">
-          <div class="card">
-            <h3>Luxury Watches</h3>
-            <p>
-              Experience elegance and craftsmanship with brands like Rolex and
-              Omega.
-            </p>
-          </div>
-          <div class="card">
-            <h3>Smart Watches</h3>
-            <p>
-              Stay connected with advanced smartwatches like Apple Watch and
-              Galaxy Watch.
-            </p>
-          </div>
-          <div class="card">
-            <h3>Sports Watches</h3>
-            <p>
-              Built for adventure, brands like G-Shock and Suunto offer
-              unmatched durability.
-            </p>
-          </div>
-        </div>
-    </section>
-
-    <section class="articles-section">
-      <div class="container">
-        <article>
-
-          <div class="blog-text">
-            <h3>
-              About Technology
-            </h3>
-
-            <p style=" text-align: justify; text-justify: inter-word; padding-right: 10px;">
-              The evolution of watches has been deeply intertwined with technological advancement. From the intricate
-              mechanical gears of traditional timepieces to the sophisticated microprocessors in modern smartwatches,
-              technology has constantly redefined what a watch can do. More recent innovations, such as GPS tracking,
-              heart rate monitoring, and connectivity with smartphones, have transformed watches into multifunctional
-              gadgets. These developments not only enhance user experience but also extend the usefulness of watches far
-              beyond timekeeping. <a href="2index.php">Read More</a>
-
-            </p>
-          </div>
-
-          <div class="image">
-            <img class="blog_image" src="../images/new1.webp" alt="watches" />
-
-          </div>
-        </article>
-
-        <article>
-          <div class="blog-text">
-            <h3>Positive Impact</h3>
-            <p style=" text-align: justify; text-justify: inter-word; padding-right: 10px;">
-              Technological integration in watches has brought several positive results. For example, with a smartwatch,
-              one can track health parameters such as heart rate, sleeping patterns, and physical activity. It has
-              helped much in fostering a healthy lifestyle. Besides, the connective features—like call notifications,
-              reminders of events on the calendar, and navigation—make life easier. <a href="3index.php">Read More</a>
-            </p>
-          </div>
-
-          <div class="image">
-            <img class="blog_image" src="../images/new2.webp" />
-          </div>
-        </article>
-
-        <article>
-          <div class="blog-text">
-            <h3>Negative Impact</h3>
-            <p style=" text-align: justify; text-justify: inter-word; padding-right: 10px;">
-              While incorporating technology into watches comes with a myriad of benefits, there are some drawbacks.
-              First, smartwatches need recharging occasionally, whereas traditional watches work on durable batteries or
-              mechanical systems, thus making them inconvenient. Further, rapid technological progress turns out to mean
-              that smartwatches quickly become outdated, which increases electronic waste. <a href="4index.php">Read
-                More</a>
-            </p>
-          </div>
-
-          <div class="image">
-            <img class="blog_image" src="../images/new3.webp" />
-          </div>
-        </article>
-
-        <article>
-          <div class="blog-text">
-            <h3>How Technology Can Increase Watch Sales</h3>
-            <p style=" text-align: justify; text-justify: inter-word; padding-right: 10px;">
-              Technology can play a pivotal role in driving watch sales: E-commerce platforms with augmented reality
-              capability give customers the chance to try on watches virtually, improving the online shopping
-              experience. Machine learning algorithms can go through customer preferences recommendations, increasing
-              the chances that at least one will be sold.<a href="5index.php">Read More</a>
-
-            </p>
-          </div>
-
-          <div class="image">
-            <img class="blog_image" src="../images/new4.webp" />
-          </div>
-        </article>
-
-        <article>
-          <div class="blog-image">
-            <h3>Application of technology on Watches</h3>
-            <p style=" text-align: justify; text-justify: inter-word; padding-right: 10px;">
-              Technology has revolutionized the watch industry by making timepieces more functional, stylish, and
-              accessible. Challenges have also been part of these developments, but their positive impacts are much
-              stronger. Effective use of technology can enhance not only the products but also how businesses relate to
-              their customers. With all the innovation in the industry, there is unlimited potential for watches to be
-              integrated into our lives.The application of technology in watches is very extensive and varied.
-              Smartwatches are equipped with advanced sensors to track fitness metrics and health indicators.
-              <a href="6index.php">Read More</a>
-            </p>
-
-          </div>
-
-          <div class="image">
-            <img class="blog_image" src="../images/new5.webp" />
-          </div>
-        </article>
-
-
-        <article>
-          <div class="blog-text">
-            <h3>Overall Conclusion</h3>
-            <p style=" text-align: justify; text-justify: inter-word; padding-right: 10px;">
-              Technology has revolutionized the watch industry by making timepieces more functional, stylish, and
-              accessible. Challenges have also been part of these developments, but their positive impacts are much
-              stronger. Effective use of technology can enhance not only the products but also how businesses relate to
-              their customers. With all the innovation in the industry, there is unlimited potential for watches to be
-              integrated into our lives.
-              <a href="7index.php">Read More </a>
-            </p>
-          </div>
-
-          <div class="image">
-            <img class="blog_image" src="../images/new6.webp">
-
-          </div>
-
-
-        </article>
+    <!-- Featured Blog -->
+    <?php
+    $featured = $conn->query("SELECT * FROM blogs WHERE is_featured = 1 LIMIT 1");
+    $feat = $featured->fetch_assoc();
+    if($feat):
+    ?>
+    <div class="featured-blog">
+      <img src="../images/blog/<?= htmlspecialchars($feat['image']) ?>" alt="<?= htmlspecialchars($feat['title']) ?>">
+      <div class="featured-blog-body">
+        <span class="featured-label">⭐ Featured</span>
+        <span class="blog-category"><?= htmlspecialchars($feat['category']) ?></span>
+        <h2><?= htmlspecialchars($feat['title']) ?></h2>
+        <p><?= htmlspecialchars($feat['excerpt']) ?></p>
+        <div class="blog-meta">📅 <?= htmlspecialchars($feat['published_date']) ?> &nbsp;|&nbsp; ✍️ <?= htmlspecialchars($feat['author']) ?></div>
+        <a href="./blogdetail.php?id=<?= $feat['id'] ?>" class="read-more">Read More →</a>
       </div>
-    </section>
     </div>
-    <!-------footer------>
-    <footer class="footer">
-      <div class="footer-container">
-        <!-- About Section -->
-        <div class="footer-section about">
-          <h3>About Us</h3>
-          <p>
-            We’re passionate about watches and believe they’re more than just timepieces—they’re a reflection of your
-            style. Our collection combines timeless elegance with modern design, so you can find the perfect watch for
-            any occasion.
+    <?php endif; ?>
 
-          </p>
-          <a href="./about us.html" style="color:gold;">Read More</a>
-        </div>
-
-        <!-- Links Section -->
-        <div class="footer-section links">
-          <h3>Quick Links</h3>
-          <ul>
-            <li><a href="../index.php">Home</a></li>
-            <li><a href="./products.php">Products</a></li>
-            <li><a href="./about us.html">About Us</a></li>
-            <li><a href="./blog.php">Blog</a></li>
-            <li><a href="./contact.html">Contact</a></li>
-          </ul>
-        </div>
-
-        <!-- Contact Section -->
-        <div class="footer-section contact">
-          <h3>Contact Us</h3>
-          <p>📍 Balkumari, Lalitpur</p> <!-- Address -->
-          <p>📞 +977 9812345678</p> <!-- Phone number -->
-          <p>📧 pratyushisneupane@gmail.com</p> <!-- Email -->
-          <p>🌐 </p>
-          <p>For Further Queries</p>
-          <a href="./contact.html" style="color: gold;">Click Here!</a>
+    <!-- All Blogs -->
+    <h2 class="section-title">Latest Articles</h2>
+    <div class="blog-grid">
+      <?php
+      $blogs = $conn->query("SELECT * FROM blogs WHERE is_featured = 0 ORDER BY id DESC");
+      while($blog = $blogs->fetch_assoc()):
+      ?>
+      <div class="blog-card">
+        <img src="../images/blog/<?= htmlspecialchars($blog['image']) ?>" alt="<?= htmlspecialchars($blog['title']) ?>">
+        <div class="blog-card-body">
+          <span class="blog-category"><?= htmlspecialchars($blog['category']) ?></span>
+          <h3><?= htmlspecialchars($blog['title']) ?></h3>
+          <div class="blog-meta">📅 <?= htmlspecialchars($blog['published_date']) ?> &nbsp;|&nbsp; ✍️ <?= htmlspecialchars($blog['author']) ?></div>
+          <p><?= htmlspecialchars($blog['excerpt']) ?></p>
+          <a href="./blogdetail.php?id=<?= $blog['id'] ?>" class="read-more">Read More →</a>
         </div>
       </div>
-      <div class="footer-bottom">
-        &copy; 2025 WatchStore |
-      </div>
-    </footer>
+      <?php endwhile; ?>
+    </div>
 
-  </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-section about">
+        <h3>About Us</h3>
+        <p>We're passionate about watches and believe they're more than just timepieces — they're a reflection of your style.</p>
+      </div>
+      <div class="footer-section links">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="../index.php">Home</a></li>
+          <li><a href="./products.php">Products</a></li>
+          <li><a href="./blog.php">Blog</a></li>
+          <li><a href="./contact.php">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-section contact">
+        <h3>Contact Us</h3>
+        <p>📍 Balkumari, Lalitpur</p>
+        <p>📞 +977 9812345678</p>
+        <p>📧 pratyushisneupane@gmail.com</p>
+        <a href="./contact.php" style="color: gold;">Click Here!</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2025 WatchStore | Time Hub
+    </div>
+  </footer>
 
 </body>
-
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

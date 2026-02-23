@@ -48,12 +48,13 @@
                 <nav>
                     <ul>
                         <li><a href="index.php" class="a_color">Home</a></li>
-                        <li><a href="./html/ " class="a_color">Products</a></li>
-                        <li><a href="./html/blog.php" class="a_color">Blog</a></li>
+                        <li><a href="./php/products.php " class="a_color">Products</a></li>
+                        <li><a href="./php/blog.php" class="a_color">Blog</a></li>
+                        <li><a href="./php/contact.php" class="a_color">Contact</a></li>
                     </ul>
                 </nav>
                 <div style="position: relative">
-                    <a href="./html/checkout.html"><img src="./images/cart.png" alt="cart" width="30px" height="30px"
+                    <a href="./php/checkout.php"><img src="./images/cart.png" alt="cart" width="30px" height="30px"
                             style="cursor: pointer;"></a>
                     <span id="cart-counter"
                         style="position: absolute; top: -10px; right: -10px; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 12px;">0</span>
@@ -62,7 +63,7 @@
             <div class="row">
                 <div class="col-2">
                     <h1>Mementos That Capture Every Moment.</h1>
-                    <a href="./html/products.php" class="btn">Explore Now &#8594;</a>
+                    <a href="./php/products.php" class="btn">Explore Now &#8594;</a>
                 </div>
             </div>
         </div>
@@ -78,7 +79,7 @@
             while($watch = $featured->fetch_assoc()):
             ?>
             <td class="col-4">
-                <a href="./html/watchdetails.php?id=<?= $watch['id'] ?>">
+                <a href="./php/watchdetails.php?id=<?= $watch['id'] ?>">
                     <img src="./images/<?= $watch['image'] ?>">
                 </a>
                 <h4><?= htmlspecialchars($watch['name']) ?></h4>
@@ -97,7 +98,7 @@
         while($watch = $latest->fetch_assoc()):
         ?>
         <td class="col-4">
-            <a href="./html/watchdetails.php?id=<?= $watch['id'] ?>">
+            <a href="./php/watchdetails.php?id=<?= $watch['id'] ?>">
                 <img src="./images/<?= $watch['image'] ?>">
             </a>
             <h4><?= htmlspecialchars($watch['name']) ?></h4>
@@ -106,7 +107,7 @@
         <?php endwhile; ?>
     </tr>
 </table>
-        <a href="./html/products.php" class="view_more">View More</a>
+        <a href="./php/products.php" class="view_more">View More</a>
     </div>
 
     <!-------Article Section------>
@@ -124,7 +125,7 @@
                 occasion. Explore our featured and latest products to find the perfect watch that resonates with your
                 style and needs.
             </p>
-            <a href="./html/blog.php" class="btn">view more</a>
+            <a href="./php/blog.php" class="btn">view more</a>
         </div>
     </section>
 
@@ -146,9 +147,9 @@
                 <h3>Quick Links</h3>
                 <ul>
                     <li><a href="./index.php">Home</a></li>
-                    <li><a href="../html/products.php">Products</a></li>
-                    <li><a href="../html/blog.php">Blog</a></li>
-                    <li><a href="../html/contact.html">Contact</a></li>
+                    <li><a href="./php/products.php">Products</a></li>
+                    <li><a href="./php/blog.php">Blog</a></li>
+                    <li><a href="./php/contact.php">Contact</a></li>
                 </ul>
             </div>
 
@@ -160,7 +161,7 @@
                 <p>📧 pratyushisneupane@gmail.com</p>
                 <p>🌐 </p>
                 <p>For Further Queries</p>
-                <a href="./html/contact.html" style="color: gold;">Click Here! </a>
+                <a href="./php/contact.php" style="color: gold;">Click Here! </a>
             </div>
         </div>
         <div class="footer-bottom">
