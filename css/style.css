@@ -1,0 +1,250 @@
+ * {
+     margin: 0;
+     /* Remove default margins for all elements */
+     padding: 0;
+     /* Remove default padding for all elements */
+     box-sizing: border-box;
+     /* Includes padding and border in element's width/height */
+ }
+
+ .navbar {
+     display: flex;
+     align-items: center;
+     padding: 20px;
+ }
+
+ nav {
+     flex: 1;
+     text-align: right;
+ }
+
+ nav ul {
+     display: inline-block;
+     /* Group list items inline */
+     list-style-type: none;
+ }
+
+ nav ul li {
+     display: inline-block;
+     margin-right: 20px;
+
+ }
+
+ a {
+     text-decoration: none;
+     /* Removes underline from links */
+
+ }
+
+ .a_color {
+     color: #ffffff;
+ }
+
+ p {
+     color: #597081;
+ }
+
+ .container {
+     max-width: 1300px;
+     margin: auto;
+     /* Center the container */
+     padding-left: 25px;
+     padding-right: 25px;
+ }
+
+ .row {
+     display: flex;
+     align-items: center;
+     flex-wrap: wrap;
+     justify-content: space-around;
+ }
+
+ .col-2 {
+     flex-basis: 50%;
+     /*setting width to 50% */
+     min-width: 300px;
+ }
+
+ .col-2 h1 {
+     font-size: 50px;
+     line-height: 60px;
+     /*  spacing between lines  */
+     margin: 25px 0;
+     color: white;
+ }
+
+ .btn {
+     display: inline-block;
+     /* aligning buttons inline */
+     background: #343434;
+     color: white;
+     padding: 8px 30px;
+     /* add spacing inside button */
+     margin: 30px 0;
+     /* add top and bottom spacing */
+     border-radius: 30px;
+     /* Rounded button edges */
+ }
+
+ .btn:hover {
+     background: grey;
+     /* change color of button to grey on hovering */
+ }
+
+ .header {
+     background: #202C2F;
+ }
+
+ .header .row {
+     margin-top: 70px;
+ }
+
+ .col-3 {
+     flex-basis: 30%;
+     min-width: 250px;
+     margin-bottom: 30px;
+ }
+
+ .col-3 img {
+     width: 100%;
+ }
+
+ .small-container {
+     max-width: 1080px;
+     margin: auto;
+     padding-left: 25px;
+     padding-right: 25px;
+
+ }
+
+ .col-4 {
+     flex-basis: 25%;
+     padding: 10px;
+     min-width: 200px;
+     margin-bottom: 50px;
+     transition: 1s;
+ }
+
+ .col-4 img {
+     width: 100%;
+ }
+
+ .title {
+     text-align: center;
+     margin: 50px auto 0;
+     position: relative;
+     line-height: 60px;
+     color: rgb(4, 98, 88);
+ }
+
+ h4 {
+     color: grey;
+     font-weight: normal;
+ }
+
+ .col-4 p {
+     font-size: 14px;
+ }
+
+ .col-4:hover {
+     transform: scale(1.1);
+     /* Enlarge column on hovering */
+ }
+
+ body {
+     font-family: Arial, sans-serif;
+     margin-bottom: 0;
+     padding: 0;
+
+ }
+
+ a {
+     text-decoration: none;
+     color: #ffffff;
+ }
+
+
+ /* Footer General Styling */
+ .footer {
+     background-color: #222;
+     color: white;
+     padding: 40px 20px;
+     font-family: Arial, sans-serif;
+     margin-top: 10px;
+ }
+
+ .footer-container {
+     max-width: 1200px;
+     margin: auto;
+     display: flex;
+     flex-wrap: wrap;
+     justify-content: space-between;
+ }
+
+ .footer-section {
+     flex: 1;
+     min-width: 250px;
+     margin: 10px;
+     text-align: center;
+ }
+
+ .footer-section h3 {
+     color: #f9a602;
+     margin-bottom: 15px;
+     font-size: 18px;
+ }
+
+ .footer-section p,
+ .footer-section li {
+     font-size: 14px;
+     line-height: 1.8;
+ }
+
+ .footer-section ul {
+     list-style: none;
+     padding: 0;
+ }
+
+ .footer-section ul li a {
+     text-decoration: none;
+     color: white;
+     transition: color 0.3s;
+ }
+
+ .footer-section ul li a:hover {
+     color: #f9a602;
+ }
+
+ /* Footer Bottom Section */
+ .footer-bottom {
+     text-align: center;
+     margin-top: 20px;
+     font-size: 14px;
+     border-top: 1px solid #444;
+     padding-top: 10px;
+     color: #aaa;
+ }
+
+ .des p,
+ li,
+ h3 {
+     text-align: center;
+     list-style-type: none;
+ }
+
+ a:hover {
+     color: tomato;
+     font-weight: 600;
+ }
+
+ .footer p {
+     color: #ffffff;
+ }
+
+ .product-card {
+     display: flex !important;
+ }
+
+ .product {
+     width: 25% !important;
+ }

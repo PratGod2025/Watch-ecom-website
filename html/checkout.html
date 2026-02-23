@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Checkout - Delivery Details</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .checkout-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .08)
+        }
+
+        .checkout-container h1 {
+            margin-bottom: 10px;
+            color: #333
+        }
+
+        .form-row {
+            display: flex;
+            gap: 10px
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+            flex: 1
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600
+        }
+
+        input[type=text],
+        input[type=email],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px
+        }
+
+        button.place-order {
+            background: #343434;
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="container">
+            <div class="navbar">
+                <a href="../index.html"><img class="logo" src="../images/logo.png" width="125px"></a>
+                <nav>
+                    <ul>
+                        <li><a href="../index.html" class="a_color">Home</a></li>
+                        <li><a href="./products.html" class="a_color">Products</a></li>
+                        <li><a href="./blog.html" class="a_color">Blog</a></li>
+                        <li><a href="./contact.html" class="a_color">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <main class="checkout-container">
+        <h1>Delivery Details</h1>
+        <p>Please provide the delivery address and contact details for your order.</p>
+
+        <section id="cartSummary" style="margin-bottom:18px">
+            <h2>Your Cart</h2>
+            <div id="cartItemsList" style="margin-bottom:8px"></div>
+            <div id="cartTotal" style="font-weight:700;margin-bottom:12px"></div>
+            <button id="clearCart" type="button"
+                style="background:#eee;border:1px solid #ccc;padding:6px 10px;border-radius:6px;cursor:pointer">Clear
+                cart</button>
+        </section>
+
+        <form id="checkoutForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="fullname">Full name</label>
+                    <input id="fullname" name="fullname" type="text" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input id="phone" name="phone" type="text" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email">
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address</label>
+                <textarea id="address" name="address" rows="3" required></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input id="city" name="city" type="text" required>
+                </div>
+                <div class="form-group">
+                    <label for="postal">Postal / ZIP</label>
+                    <input id="postal" name="postal" type="text">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="notes">Delivery notes (optional)</label>
+                <textarea id="notes" name="notes" rows="2"></textarea>
+            </div>
+
+            <button type="submit" class="place-order">Place Order</button>
+        </form>
+
+        <div id="confirmation"
+            style="display:none;margin-top:16px;padding:12px;background:#e6ffed;border:1px solid #c6f0d0;border-radius:6px;color:#064c2a">
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('checkoutForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const name = document.getElementById('fullname').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const address = document.getElementById('address').value.trim();
+            if (!name || !phone || !address) {
+                alert('Please fill required fields: name, phone and address.');
+                return;
+            }
+            // In a real site you'd POST this to your server. For now show confirmation.
+            const conf = document.getElementById('confirmation');
+            conf.style.display = 'block';
+            conf.textContent = `Thanks ${name}! Your delivery details have been received. We will contact you at ${phone}.`;
+            // Optionally clear form
+            document.getElementById('checkoutForm').reset();
+            // Clear cart after placing order
+            localStorage.removeItem('cartItems');
+            localStorage.setItem('cartCount', 0);
+            renderCart();
+        });
+
+        function renderCart() {
+            const items = JSON.parse(localStorage.getItem('cartItems')) || [];
+            const list = document.getElementById('cartItemsList');
+            const totalEl = document.getElementById('cartTotal');
+            list.innerHTML = '';
+            if (items.length === 0) {
+                list.innerHTML = '<p>Your cart is empty.</p>';
+                totalEl.textContent = '';
+                return;
+            }
+            let total = 0;
+            const ul = document.createElement('ul');
+            ul.style.listStyle = 'none';
+            ul.style.padding = '0';
+            items.forEach((it, idx) => {
+                const li = document.createElement('li');
+                li.style.padding = '6px 0';
+                li.textContent = `${it.name} — Rs ${it.price.toLocaleString()}`;
+                ul.appendChild(li);
+                total += (it.price || 0);
+            });
+            list.appendChild(ul);
+            totalEl.textContent = 'Total: Rs ' + total.toLocaleString();
+        }
+
+        document.getElementById('clearCart').addEventListener('click', function () {
+            localStorage.removeItem('cartItems');
+            localStorage.setItem('cartCount', 0);
+            renderCart();
+        });
+
+        // Render on load
+        renderCart();
+    </script>
+</body>
+
+</html>

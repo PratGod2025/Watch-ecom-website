@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="description" content="contact page of watch website">
+    <meta name="keywords" content="contact us, watches, Soura">
+    <title>Contact Page</title>
+</head>
+<style>
+    body {
+        margin: 0;
+        /* Removes default margin for the body */
+        font-family: Arial;
+        background-color: #f9f9f9;
+    }
+
+    .container {
+        display: flex;
+        /* Uses flexbox layout for alignment */
+        justify-content: center;
+        /* Centers the content horizontally */
+        align-items: center;
+        /* Centers the content vertically */
+        height: 600px;
+        padding: 20px;
+    }
+
+    .card {
+        display: flex;
+        /* Uses flexbox layout for the card */
+        width: 80%;
+        max-width: 1000px;
+        /* Limits the maximum width of the card */
+        background: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        /* Rounds the corners of the card */
+        overflow: hidden;
+        /* Prevents content from overflowing the card */
+    }
+
+    .form-section {
+        flex: 1;
+        /* Ensures the form section takes up equal space */
+        background-color: #2575fc;
+        /* Sets the background color of the form section */
+        color: #fff;
+        /* Sets the text color to white */
+        padding: 30px;
+        /* Adds padding to the form section */
+    }
+
+    .form-section h2 {
+        margin-bottom: 20px;
+        /* Adds space below the header */
+    }
+
+    .form-section input,
+    .form-section textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: none;
+        /* Removes borders around the input fields */
+        border-radius: 4px;
+        /* Rounds the corners of the input fields */
+        font-size: 16px;
+        /* Sets font size inside input fields */
+        resize: none;
+        /* Disables resizing of the textarea */
+    }
+
+    .form-section input[type="radio"] {
+        width: auto;
+        /* Makes the radio buttons their default size */
+        margin-right: 10px;
+        /* Adds space to the right of the radio buttons */
+    }
+
+    .form-section label {
+        font-size: 16px;
+        /* Sets font size for labels */
+    }
+
+    .form-section button {
+        display: block;
+        /* Makes the button a block-level element */
+        width: 100%;
+        padding: 10px;
+        background-color: #ff007f;
+        border: none;
+        /* Removes border around the button */
+        color: #fff;
+        font-size: 16px;
+        border-radius: 4px;
+        /* Rounds the corners of the button */
+        cursor: pointer;
+        /* Changes the cursor to a pointer when hovered */
+        margin-top: 10px;
+        /* Adds margin to the top of the button */
+    }
+
+    .form-section button:hover {
+        background-color: #e6006f;
+        /* Changes button color on hover */
+    }
+
+    .info-section {
+        flex: 1;
+        /* Ensures the info section takes up equal space */
+        padding: 30px;
+        position: relative;
+        /* Allows absolute positioning for elements inside */
+    }
+
+    .info-section h2 {
+        margin-bottom: 20px;
+        /* Adds space below the header */
+    }
+
+    .info-section p {
+        margin: 10px 0;
+        /* Adds margin between paragraphs */
+        font-size: 16px;
+        /* Sets font size for paragraphs */
+    }
+
+    .back-button {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background-color: #606060;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+    }
+
+    .back-button:hover {
+        background-color: #ababab;
+    }
+</style>
+
+<body>
+    <a href="../index.html"> <button class="back-button">&#8592; Back</button></a>
+    <div class="container">
+        <div class="card">
+            <div class="form-section">
+                <h2>Send us a Message</h2>
+                <form name="contactForm" onsubmit="return validateForm()">
+                    <!-- Form submission triggers validateForm function -->
+                    <div class="form-group">
+                        <label for="name">Name : </label>
+                        <input type="text" id="name" name="name" placeholder="Full name" required>
+                        <!-- Name input field -->
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email : </label>
+                        <input type="email" id="email" name="email" placeholder="Your email address" required>
+                        <!-- Email input field -->
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number : </label>
+                        <input type="tel" id="phone" name="phone" placeholder="10-digit number" required>
+                        <!-- Phone input field -->
+                    </div>
+
+                    <div class="form-group">
+                        <label>Gender : </label>
+                        <div class="gender-group">
+                            <label class="gender-option">
+                                <input type="radio" name="gender" value="male" checked> Male <!-- Male radio button -->
+                            </label>
+                            <label class="gender-option">
+                                <input type="radio" name="gender" value="female"> Female <!-- Female radio button -->
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Message : </label>
+                        <textarea id="message" name="message" placeholder="Leave a message here." required></textarea>
+                        <!-- Message textarea -->
+                    </div>
+
+                    <button type="submit">Send Message</button> <!-- Submit button -->
+                </form>
+            </div>
+
+            <div class="info-section">
+                <h2>Contact Us</h2>
+                <p>📍 Balkumari, Lalitpur</p> <!-- Address -->
+                <p>📞 +977 9812345678</p> <!-- Phone number -->
+                <p>📧 pratyushisneupane@gmail.com</p> <!-- Email -->
+                <p>🌐 </p> <!-- Website -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to validate form inputs before submission
+        function validateForm() {
+            const name = document.forms["contactForm"]["name"].value.trim(); // Gets the name input value
+            const email = document.forms["contactForm"]["email"].value.trim(); // Gets the email input value
+            const phone = document.forms["contactForm"]["phone"].value.trim(); // Gets the phone input value
+            const message = document.forms["contactForm"]["message"].value.trim(); // Gets the message input value
+
+            if (!name || !email || !phone || !message) { // Checks if all required fields are filled
+                alert("Please fill in all required fields");
+                return false; // Prevents form submission if any field is empty
+            }
+
+            if (isNaN(phone)) { // Checks if the phone number contains non-numeric characters
+                alert("Please enter a valid digits");
+                return false; // Prevents form submission
+            }
+            if (phone.length !== 10) { // Checks if the phone number is exactly 10 digits long
+                alert("Please enter a valid 10-digit phone number");
+                return false; // Prevents form submission
+            }
+
+            if (!email.includes("@")) { // Checks if the email contains '@'
+                alert("Please enter a valid email address");
+                return false; // Prevents form submission
+            }
+
+            alert("Message sent successfully!"); // Shows success message on successful validation
+            return true; // Allows form submission
+        }
+    </script>
+</body>
+
+</html>
