@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+<?php include 'config.php'; ?> 
+<!DOCTYPE html> 
 <html lang="en">
 
 <head>
@@ -43,12 +44,12 @@
     <div class="header">
         <div class="container">
             <div class="navbar">
-                <a href="./index.html"><img class="logo" src="./images/logo.png" width="125px"></a>
+                <a href="./index.php"><img class="logo" src="./images/logo.png" width="125px"></a>
                 <nav>
                     <ul>
-                        <li><a href="index.html" class="a_color">Home</a></li>
-                        <li><a href="./html/products.html" class="a_color">Products</a></li>
-                        <li><a href="./html/blog.html" class="a_color">Blog</a></li>
+                        <li><a href="index.php" class="a_color">Home</a></li>
+                        <li><a href="./html/ " class="a_color">Products</a></li>
+                        <li><a href="./html/blog.php" class="a_color">Blog</a></li>
                     </ul>
                 </nav>
                 <div style="position: relative">
@@ -61,69 +62,51 @@
             <div class="row">
                 <div class="col-2">
                     <h1>Mementos That Capture Every Moment.</h1>
-                    <a href="./html/products.html" class="btn">Explore Now &#8594;</a>
+                    <a href="./html/products.php" class="btn">Explore Now &#8594;</a>
                 </div>
             </div>
         </div>
     </div>
 
     <!----featured products---->
-    <div class="small-container">
-        <h2 class="title">Featured Products</h2>
-        <table>
-            <tr class="row">
-                <td class="col-4">
-                    <a href="../html/watchdetails5.html"> <img src="./images/watch1.png"></a>
-                    <h4>Audemars Piguet Royal Oak</h4>
-                    <p>Rs. 1580000</p>
-                </td>
-                <td class="col-4">
-                    <a href="../html/watchdetails4.html"> <img src="./images/watch2.png"></a>
-                    <h4>Privé Cloche de Cartier</h4>
-                    <p>Rs. 1000000</p>
-                </td>
-                <td class="col-4">
-                    <a href="../html/watchdetails3.html"><img src="./images/watch3.png"></a>
-                    <h4>Rolex Sea-Dweller</h4>
-                    <p>Rs. 200000</p>
-                </td>
-                <td class="col-4">
-                    <a href="../html/watchdetails2.html"><img src="./images/watch4.png"></a>
-                    <h4>Cartier Tank</h4>
-                    <p>Rs. 530000</p>
-                </td>
-            </tr>
-        </table>
-
+   <div class="small-container">
+    <h2 class="title">Featured Products</h2>
+    <table>
+        <tr class="row">
+            <?php
+            $featured = $conn->query("SELECT * FROM watches WHERE is_featured = 1");
+            while($watch = $featured->fetch_assoc()):
+            ?>
+            <td class="col-4">
+                <a href="./html/watchdetails.php?id=<?= $watch['id'] ?>">
+                    <img src="./images/<?= $watch['image'] ?>">
+                </a>
+                <h4><?= htmlspecialchars($watch['name']) ?></h4>
+                <p>Rs. <?= number_format($watch['price']) ?></p>
+            </td>
+            <?php endwhile; ?>
+        </tr>
+    </table>
 
         <!-----Latest Products---->
-        <h2 class="title">Latest Products</h2>
-        <table>
-            <tr class="row">
-                <td class="col-4">
-                    <a href="../html/watchdetails1.html"><img src="./images/watch5.png"></a>
-                    <h4>Seiko Presage</h4>
-                    <p>Rs. 180000</p>
-                </td>
-                <td class="col-4">
-                    <a href="../html/watchdetails9.html"><img src="./images/watch6.png"></a>
-                    <h4>Casio G-Shock GA-2100</h4>
-                    <p>Rs.11500 </p>
-                </td>
-                <td class="col-4">
-                    <a href="../html/watchdetails13.html"> <img src="./images/watch7.png"></a>
-                    <h4>Casio F-91W</h4>
-                    <p>Rs. 2100</p>
-                </td>
-                <td class="col-4">
-                    <a href="../html/watchdetails10.html"> <img src="./images/watch8.png"></a>
-                    <h4>Seiko 5 Sports</h4>
-                    <p>Rs. 21000</p>
-                </td>
-            </tr>
-        </table>
-
-        <a href="./html/products.html" class="view_more">View More</a>
+       <h2 class="title">Latest Products</h2>
+<table>
+    <tr class="row">
+        <?php
+        $latest = $conn->query("SELECT * FROM watches WHERE is_latest = 1");
+        while($watch = $latest->fetch_assoc()):
+        ?>
+        <td class="col-4">
+            <a href="./html/watchdetails.php?id=<?= $watch['id'] ?>">
+                <img src="./images/<?= $watch['image'] ?>">
+            </a>
+            <h4><?= htmlspecialchars($watch['name']) ?></h4>
+            <p>Rs. <?= number_format($watch['price']) ?></p>
+        </td>
+        <?php endwhile; ?>
+    </tr>
+</table>
+        <a href="./html/products.php" class="view_more">View More</a>
     </div>
 
     <!-------Article Section------>
@@ -141,7 +124,7 @@
                 occasion. Explore our featured and latest products to find the perfect watch that resonates with your
                 style and needs.
             </p>
-            <a href="./html/blog.html" class="btn">view more</a>
+            <a href="./html/blog.php" class="btn">view more</a>
         </div>
     </section>
 
@@ -162,9 +145,9 @@
             <div class="footer-section links">
                 <h3>Quick Links</h3>
                 <ul>
-                    <li><a href="./index.html">Home</a></li>
-                    <li><a href="../html/products.html">Products</a></li>
-                    <li><a href="../html/blog.html">Blog</a></li>
+                    <li><a href="./index.php">Home</a></li>
+                    <li><a href="../html/products.php">Products</a></li>
+                    <li><a href="../html/blog.php">Blog</a></li>
                     <li><a href="../html/contact.html">Contact</a></li>
                 </ul>
             </div>

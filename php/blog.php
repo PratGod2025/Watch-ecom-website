@@ -176,12 +176,12 @@
   <div class="header">
     <div class="container">
       <div class="navbar">
-        <a href="../index.html"> <img class="logo" src="../images/logo.png" width="125px"></a>
+        <a href="../index.php"> <img class="logo" src="../images/logo.png" width="125px"></a>
         <nav>
           <ul>
-            <li><a href="../index.html" class="a_color">Home</a></li>
-            <li><a href="./products.html" class="a_color">Products</a></li>
-            <li><a href="./blog.html" class="a_color">Blog</a></li>
+            <li><a href="../index.php" class="a_color">Home</a></li>
+            <li><a href="./products.php" class="a_color">Products</a></li>
+            <li><a href="./blog.php" class="a_color">Blog</a></li>
             <li><a href="./contact.html" class="a_color">Contact</a></li>
           </ul>
         </nav>
@@ -245,7 +245,7 @@
               technology has constantly redefined what a watch can do. More recent innovations, such as GPS tracking,
               heart rate monitoring, and connectivity with smartphones, have transformed watches into multifunctional
               gadgets. These developments not only enhance user experience but also extend the usefulness of watches far
-              beyond timekeeping. <a href="2index.html">Read More</a>
+              beyond timekeeping. <a href="2index.php">Read More</a>
 
             </p>
           </div>
@@ -263,7 +263,7 @@
               Technological integration in watches has brought several positive results. For example, with a smartwatch,
               one can track health parameters such as heart rate, sleeping patterns, and physical activity. It has
               helped much in fostering a healthy lifestyle. Besides, the connective features—like call notifications,
-              reminders of events on the calendar, and navigation—make life easier. <a href="3index.html">Read More</a>
+              reminders of events on the calendar, and navigation—make life easier. <a href="3index.php">Read More</a>
             </p>
           </div>
 
@@ -279,7 +279,7 @@
               While incorporating technology into watches comes with a myriad of benefits, there are some drawbacks.
               First, smartwatches need recharging occasionally, whereas traditional watches work on durable batteries or
               mechanical systems, thus making them inconvenient. Further, rapid technological progress turns out to mean
-              that smartwatches quickly become outdated, which increases electronic waste. <a href="4index.html">Read
+              that smartwatches quickly become outdated, which increases electronic waste. <a href="4index.php">Read
                 More</a>
             </p>
           </div>
@@ -296,7 +296,7 @@
               Technology can play a pivotal role in driving watch sales: E-commerce platforms with augmented reality
               capability give customers the chance to try on watches virtually, improving the online shopping
               experience. Machine learning algorithms can go through customer preferences recommendations, increasing
-              the chances that at least one will be sold.<a href="5index.html">Read More</a>
+              the chances that at least one will be sold.<a href="5index.php">Read More</a>
 
             </p>
           </div>
@@ -316,7 +316,7 @@
               their customers. With all the innovation in the industry, there is unlimited potential for watches to be
               integrated into our lives.The application of technology in watches is very extensive and varied.
               Smartwatches are equipped with advanced sensors to track fitness metrics and health indicators.
-              <a href="6index.html">Read More</a>
+              <a href="6index.php">Read More</a>
             </p>
 
           </div>
@@ -336,7 +336,7 @@
               stronger. Effective use of technology can enhance not only the products but also how businesses relate to
               their customers. With all the innovation in the industry, there is unlimited potential for watches to be
               integrated into our lives.
-              <a href="7index.html">Read More </a>
+              <a href="7index.php">Read More </a>
             </p>
           </div>
 
@@ -369,10 +369,10 @@
         <div class="footer-section links">
           <h3>Quick Links</h3>
           <ul>
-            <li><a href="../index.html">Home</a></li>
-            <li><a href="./products.html">Products</a></li>
+            <li><a href="../index.php">Home</a></li>
+            <li><a href="./products.php">Products</a></li>
             <li><a href="./about us.html">About Us</a></li>
-            <li><a href="./blog.html">Blog</a></li>
+            <li><a href="./blog.php">Blog</a></li>
             <li><a href="./contact.html">Contact</a></li>
           </ul>
         </div>

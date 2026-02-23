@@ -145,7 +145,7 @@
 </style>
 
 <body>
-    <a href="../index.html"> <button class="back-button">&#8592; Back</button></a>
+    <a href="../index.php"> <button class="back-button">&#8592; Back</button></a>
     <div class="container">
         <div class="card">
             <div class="form-section">
