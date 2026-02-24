@@ -201,20 +201,20 @@ include 'includes/header.php';
                 <div class="form-group">
                     <label>Street / Area *</label>
                     <input type="text" name="address" required
-                           value="<?= htmlspecialchars($user['address'] ?? '') ?>"
+                           value="<?= htmlspecialchars($_POST['address'] ?? $user['address'] ?? '') ?>"
                            placeholder="e.g. Thamel, Putalisadak…">
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label>City *</label>
                         <input type="text" name="city" required
-                               value="<?= htmlspecialchars($user['city'] ?? '') ?>"
+                               value="<?= htmlspecialchars($_POST['city'] ?? $user['city'] ?? '') ?>"
                                placeholder="Kathmandu">
                     </div>
                     <div class="form-group">
                         <label>Phone Number *</label>
                         <input type="text" name="phone" required
-                               value="<?= htmlspecialchars($user['phone'] ?? '') ?>"
+                               value="<?= htmlspecialchars($_POST['phone'] ?? $user['phone'] ?? '') ?>"
                                placeholder="98XXXXXXXX">
                     </div>
                 </div>

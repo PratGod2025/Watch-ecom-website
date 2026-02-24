@@ -35,7 +35,7 @@ $orders = $conn->query(
 $detail = null;
 if (isset($_GET['id'])) {
     $oid  = (int)$_GET['id'];
-    $res  = $conn->query("SELECT o.*, u.username, u.email, u.phone FROM orders o JOIN users u ON o.user_id=u.id WHERE o.id=$oid");
+    $res  = $conn->query("SELECT o.*, u.username, u.email FROM orders o JOIN users u ON o.user_id=u.id WHERE o.id=$oid");
     $detail = $res->fetch_assoc();
     $detail_items = $conn->query(
         "SELECT oi.*, w.name, w.image FROM order_items oi JOIN watches w ON oi.watch_id=w.id WHERE oi.order_id=$oid"
@@ -142,7 +142,7 @@ include '../includes/header.php';
             <h3>Order: <?= htmlspecialchars($detail['order_number']) ?></h3>
             <div class="detail-grid">
                 <div class="d-item"><label>Customer</label><span><?= htmlspecialchars($detail['username']) ?> (<?= htmlspecialchars($detail['email']) ?>)</span></div>
-                <div class="d-item"><label>Phone</label><span><?= htmlspecialchars($detail['phone'] ?? '-') ?></span></div>
+                <div class="d-item"><label>Phone</label><span><?= htmlspecialchars($detail['phone_number'] ?? '-') ?></span></div>
                 <div class="d-item"><label>Total</label><span style="color:#c9a84c;">Rs. <?= number_format($detail['total_amount']) ?></span></div>
                 <div class="d-item"><label>Payment</label><span><?= strtoupper($detail['payment_method']) ?> (<?= strtoupper($detail['payment_status']) ?>)</span></div>
                 <div class="d-item"><label>Shipping</label><span><?= htmlspecialchars($detail['shipping_address'] . ', ' . $detail['shipping_city']) ?></span></div>
