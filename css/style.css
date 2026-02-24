@@ -1,250 +1,367 @@
- * {
-     margin: 0;
-     /* Remove default margins for all elements */
-     padding: 0;
-     /* Remove default padding for all elements */
-     box-sizing: border-box;
-     /* Includes padding and border in element's width/height */
- }
+/* ============================================================
+   Time-Hub – Global Stylesheet  |  Red Edition
+   ============================================================ */
 
- .navbar {
-     display: flex;
-     align-items: center;
-     padding: 20px;
- }
+/* ── Google Fonts ── */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
- nav {
-     flex: 1;
-     text-align: right;
- }
+/* ── CSS Variables (red palette) ── */
+:root {
+    --red: #c0392b;
+    --red-dark: #8b1a12;
+    --red-light: #e74c3c;
+    --gold: #c9a84c;
+    --dark: #1a0a0a;
+    /* near-black with red tint */
+    --dark-2: #2a1010;
+    --text: #1a0a0a;
+    --muted: #888;
+    --bg: #fdf5f5;
+    /* very pale red tint background */
+    --white: #ffffff;
+    --shadow: 0 4px 20px rgba(192, 57, 43, .12);
+    --radius: 10px;
+    --transition: all .25s ease;
+}
 
- nav ul {
-     display: inline-block;
-     /* Group list items inline */
-     list-style-type: none;
- }
+/* ── Reset ── */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
- nav ul li {
-     display: inline-block;
-     margin-right: 20px;
+html {
+    scroll-behavior: smooth;
+}
 
- }
+body {
+    font-family: 'Outfit', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 0;
+}
 
- a {
-     text-decoration: none;
-     /* Removes underline from links */
+a {
+    text-decoration: none;
+    color: inherit;
+}
 
- }
+a:hover {
+    color: var(--red-light);
+    font-weight: 600;
+}
 
- .a_color {
-     color: #ffffff;
- }
+p {
+    color: #6b3030;
+    line-height: 1.65;
+}
 
- p {
-     color: #597081;
- }
+h3,
+h4 {
+    text-align: center;
+}
 
- .container {
-     max-width: 1300px;
-     margin: auto;
-     /* Center the container */
-     padding-left: 25px;
-     padding-right: 25px;
- }
+/* ── Navbar / Header ── */
+.header {
+    background: var(--dark);
+    /* replaces #202c2f */
+    border-bottom: 2px solid var(--red-dark);
+    margin: 0;
+    padding: 0;
+}
 
- .row {
-     display: flex;
-     align-items: center;
-     flex-wrap: wrap;
-     justify-content: space-around;
- }
+/* Kill any gap between header and body */
+.header .row {
+    margin-top: 0;
+}
 
- .col-2 {
-     flex-basis: 50%;
-     /*setting width to 50% */
-     min-width: 300px;
- }
+.navbar {
+    display: flex;
+    align-items: center;
+    padding: 14px 24px;
+    gap: 16px;
+}
 
- .col-2 h1 {
-     font-size: 50px;
-     line-height: 60px;
-     /*  spacing between lines  */
-     margin: 25px 0;
-     color: white;
- }
+nav {
+    flex: 1;
+    text-align: right;
+}
 
- .btn {
-     display: inline-block;
-     /* aligning buttons inline */
-     background: #343434;
-     color: white;
-     padding: 8px 30px;
-     /* add spacing inside button */
-     margin: 30px 0;
-     /* add top and bottom spacing */
-     border-radius: 30px;
-     /* Rounded button edges */
- }
+nav ul {
+    display: inline-block;
+    list-style: none;
+}
 
- .btn:hover {
-     background: grey;
-     /* change color of button to grey on hovering */
- }
+nav ul li {
+    display: inline-block;
+    margin-right: 20px;
+}
 
- .header {
-     background: #202C2F;
- }
+nav ul li a {
+    color: #f0dada;
+    font-size: 15px;
+    transition: var(--transition);
+}
 
- .header .row {
-     margin-top: 70px;
- }
+nav ul li a:hover {
+    color: var(--red-light);
+    font-weight: 600;
+}
 
- .col-3 {
-     flex-basis: 30%;
-     min-width: 250px;
-     margin-bottom: 30px;
- }
+/* Auth buttons */
+.nav-auth {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
 
- .col-3 img {
-     width: 100%;
- }
+.nav-auth a {
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: var(--transition);
+}
 
- .small-container {
-     max-width: 1080px;
-     margin: auto;
-     padding-left: 25px;
-     padding-right: 25px;
+.nav-auth a:hover {
+    background: var(--gold);
+    color: var(--dark);
+}
 
- }
+/* Cart counter */
+.cart-wrap {
+    position: relative;
+    margin-left: 6px;
+}
 
- .col-4 {
-     flex-basis: 25%;
-     padding: 10px;
-     min-width: 200px;
-     margin-bottom: 50px;
-     transition: 1s;
- }
+#cart-counter {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background: var(--red);
+    color: #fff;
+    border-radius: 50%;
+    padding: 1px 6px;
+    font-size: 11px;
+    font-weight: bold;
+    min-width: 18px;
+    text-align: center;
+}
 
- .col-4 img {
-     width: 100%;
- }
+/* ── Container helpers ── */
+.container {
+    max-width: 1300px;
+    margin: auto;
+    padding: 0 25px;
+}
 
- .title {
-     text-align: center;
-     margin: 50px auto 0;
-     position: relative;
-     line-height: 60px;
-     color: rgb(4, 98, 88);
- }
+.small-container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 0 25px;
+}
 
- h4 {
-     color: grey;
-     font-weight: normal;
- }
+.row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
 
- .col-4 p {
-     font-size: 14px;
- }
+/* ── Col helpers ── */
+.col-2 {
+    flex-basis: 50%;
+    min-width: 300px;
+}
 
- .col-4:hover {
-     transform: scale(1.1);
-     /* Enlarge column on hovering */
- }
+.col-2 h1 {
+    font-size: 50px;
+    line-height: 62px;
+    margin: 25px 0;
+    color: var(--white);
+}
 
- body {
-     font-family: Arial, sans-serif;
-     margin-bottom: 0;
-     padding: 0;
+.col-3 {
+    flex-basis: 30%;
+    min-width: 250px;
+    margin-bottom: 30px;
+}
 
- }
+.col-3 img {
+    width: 100%;
+}
 
- a {
-     text-decoration: none;
-     color: #ffffff;
- }
+.col-4 {
+    flex-basis: 25%;
+    padding: 10px;
+    min-width: 200px;
+    margin-bottom: 40px;
+    transition: .3s;
+}
 
+.col-4 img {
+    width: 100%;
+}
 
- /* Footer General Styling */
- .footer {
-     background-color: #222;
-     color: white;
-     padding: 40px 20px;
-     font-family: Arial, sans-serif;
-     margin-top: 10px;
- }
+.col-4:hover {
+    transform: translateY(-6px);
+}
 
- .footer-container {
-     max-width: 1200px;
-     margin: auto;
-     display: flex;
-     flex-wrap: wrap;
-     justify-content: space-between;
- }
+.col-4 p {
+    font-size: 14px;
+}
 
- .footer-section {
-     flex: 1;
-     min-width: 250px;
-     margin: 10px;
-     text-align: center;
- }
+/* ── Hero section (homepage) ── */
+/* Removes the white gap — hero is inside .header so just ensure no margin/padding */
+.header-section,
+.hero {
+    margin: 0;
+    padding: 0;
+}
 
- .footer-section h3 {
-     color: #f9a602;
-     margin-bottom: 15px;
-     font-size: 18px;
- }
+/* ── CTA Button ── */
+.btn {
+    display: inline-block;
+    background: var(--red);
+    color: var(--white);
+    padding: 10px 32px;
+    margin: 20px 0;
+    border-radius: 30px;
+    font-weight: 600;
+    letter-spacing: .5px;
+    transition: var(--transition);
+    border: 2px solid transparent;
+}
 
- .footer-section p,
- .footer-section li {
-     font-size: 14px;
-     line-height: 1.8;
- }
+.btn:hover {
+    background: transparent;
+    border-color: var(--red-light);
+    color: var(--red-light);
+    font-weight: 600;
+}
 
- .footer-section ul {
-     list-style: none;
-     padding: 0;
- }
+/* View-more link */
+.view_more {
+    display: inline-block;
+    background: var(--dark);
+    color: var(--white);
+    padding: 9px 32px;
+    margin: 16px 0 36px;
+    border-radius: 30px;
+    font-size: 14px;
+    transition: var(--transition);
+    border: 2px solid transparent;
+}
 
- .footer-section ul li a {
-     text-decoration: none;
-     color: white;
-     transition: color 0.3s;
- }
+.view_more:hover {
+    background: var(--red);
+    border-color: var(--red);
+    color: #fff;
+}
 
- .footer-section ul li a:hover {
-     color: #f9a602;
- }
+/* ── Section titles ── */
+.title {
+    text-align: center;
+    margin: 48px auto 6px;
+    position: relative;
+    line-height: 56px;
+    font-size: 28px;
+    color: var(--red-dark);
+    font-weight: 700;
+    letter-spacing: 1px;
+}
 
- /* Footer Bottom Section */
- .footer-bottom {
-     text-align: center;
-     margin-top: 20px;
-     font-size: 14px;
-     border-top: 1px solid #444;
-     padding-top: 10px;
-     color: #aaa;
- }
+.title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: var(--red);
+    margin: 4px auto 0;
+    border-radius: 2px;
+}
 
- .des p,
- li,
- h3 {
-     text-align: center;
-     list-style-type: none;
- }
+h4 {
+    color: #888;
+    font-weight: 400;
+}
 
- a:hover {
-     color: tomato;
-     font-weight: 600;
- }
+/* ── Footer ── */
+.footer {
+    background: var(--dark);
+    color: var(--white);
+    padding: 48px 20px 0;
+    font-family: 'Outfit', Arial, sans-serif;
+    margin-top: 0;
+    border-top: 3px solid var(--red-dark);
+}
 
- .footer p {
-     color: #ffffff;
- }
+.footer-container {
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
 
- .product-card {
-     display: flex !important;
- }
+.footer-section {
+    flex: 1;
+    min-width: 220px;
+    margin: 10px;
+    text-align: center;
+}
 
- .product {
-     width: 25% !important;
- }
+.footer-section h3 {
+    color: var(--gold);
+    margin-bottom: 14px;
+    font-size: 17px;
+    text-align: center;
+}
+
+.footer-section p,
+.footer-section li {
+    font-size: 14px;
+    line-height: 1.9;
+    color: #d0b0b0;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li a {
+    color: #d0b0b0;
+    transition: color .2s;
+}
+
+.footer-section ul li a:hover {
+    color: var(--gold);
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 13px;
+    border-top: 1px solid #4a1515;
+    padding: 14px 0;
+    color: #888;
+}
+
+.footer p {
+    color: #d0b0b0;
+}
+
+/* ── Misc ── */
+.des p,
+li {
+    text-align: center;
+    list-style-type: none;
+}

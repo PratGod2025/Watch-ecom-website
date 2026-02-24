@@ -1,428 +1,402 @@
+<?php
+session_start();
+require_once '../config.php';
 
-<!DOCTYPE html>
-<html lang="eng">
+$page_title = 'Collection';
+$css_prefix = '../';
 
-<head>
-  <meta name="description" content="Products page of watch selling website">
-  <meta name="keywords" content="Products, watches, Soura">
-  <meta name="author" content="Oscar Kafle">
-  <title>Products Page</title>
-  <link rel="stylesheet" href="../css/style.css">
-  <style>
-    .video-container {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-    }
+// ── Search & filter ──────────────────────────────────────────
+$search    = trim($conn->real_escape_string($_GET['search'] ?? ''));
+$brand     = $conn->real_escape_string($_GET['brand'] ?? '');
+$min_price = (float)($_GET['min'] ?? 0);
+$max_price = (float)($_GET['max'] ?? 0);
+$sort      = $_GET['sort'] ?? 'default';
 
-    .video-container video {
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-    }
+$where = [];
+if ($search)    $where[] = "(name LIKE '%$search%' OR brand LIKE '%$search%' OR description LIKE '%$search%')";
+if ($brand)     $where[] = "brand = '$brand'";
+if ($min_price) $where[] = "price >= $min_price";
+if ($max_price) $where[] = "price <= $max_price";
+$where_sql = $where ? 'WHERE ' . implode(' AND ', $where) : '';
 
-    video {
-      object-fit: cover;
-      object-position: center;
-      width: 100%;
-      height: 100%;
-    }
+$order_sql = match ($sort) {
+    'price_asc'  => 'ORDER BY price ASC',
+    'price_desc' => 'ORDER BY price DESC',
+    'name'       => 'ORDER BY name ASC',
+    'rating'     => 'ORDER BY rating DESC',
+    default      => 'ORDER BY id ASC',
+};
 
-    .green {
-      background: #202c2f;
-    }
+$brands_res = $conn->query("SELECT DISTINCT brand FROM watches ORDER BY brand");
+$brands     = $brands_res ? $brands_res->fetch_all(MYSQLI_ASSOC) : [];
+$watches    = $conn->query("SELECT * FROM watches $where_sql $order_sql");
+$count      = $watches ? $watches->num_rows : 0;
 
-    .navbar {
-      display: flex;
-      align-items: center;
-      padding: 10px;
-    }
+include 'includes/header.php';
+?>
+<style>
+/* ── Page base ── */
+body { background: #1a0a0a; color: #f0e0e0; font-family: 'Outfit', Arial, sans-serif; margin: 0; }
 
-    nav {
-      flex: 1;
-      text-align: right;
-    }
+/* ── Hero banner over products ── */
+.collection-hero {
+    background: linear-gradient(135deg, #1a0a0a 0%, #3d0b0b 50%, #1a0a0a 100%);
+    text-align: center;
+    padding: 64px 20px 48px;
+    border-bottom: 2px solid #4a1515;
+    position: relative;
+    overflow: hidden;
+}
+.collection-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(192,57,43,.18) 0%, transparent 70%);
+}
+.collection-hero h1 {
+    font-size: 48px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    position: relative;
+}
+.collection-hero h1 span { color: #c0392b; }
+.collection-hero p  { color: #c0a0a0; font-size: 16px; position: relative; }
+.hero-line {
+    width: 80px; height: 3px;
+    background: linear-gradient(90deg, #c0392b, #c9a84c);
+    margin: 14px auto 0;
+    border-radius: 2px;
+}
 
-    nav ul {
-      display: inline-block;
-      list-style-type: none;
-    }
+/* ── Filter bar ── */
+.filter-wrap { max-width: 1200px; margin: -28px auto 0; padding: 0 24px; position: relative; z-index: 10; }
+.filter-bar {
+    background: #2a0e0e;
+    border: 1px solid #4a1515;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.4);
+    padding: 20px 24px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+.filter-bar label { font-size: 11px; font-weight: 600; color: #c0a0a0; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 5px; }
+.filter-bar input,
+.filter-bar select {
+    background: #1a0a0a;
+    border: 1px solid #4a1515;
+    color: #f0e0e0;
+    border-radius: 6px;
+    padding: 9px 12px;
+    font-size: 14px;
+    transition: border .2s;
+}
+.filter-bar input:focus,
+.filter-bar select:focus { border-color: #c0392b; outline: none; }
+.filter-bar select option { background: #1a0a0a; }
+.search-input { flex: 2; min-width: 180px; }
+.search-input input { width: 100%; box-sizing: border-box; }
+.btn-search {
+    background: linear-gradient(135deg, #c0392b, #8b1a12);
+    color: #fff;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    height: 40px;
+    letter-spacing: .5px;
+    transition: opacity .2s;
+}
+.btn-search:hover { opacity: .85; }
+.btn-clear {
+    background: transparent;
+    color: #c0a0a0;
+    border: 1px solid #4a1515;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    height: 40px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: background .2s;
+}
+.btn-clear:hover { background: #3d0b0b; color: #fff; }
 
-    nav ul li {
-      display: inline-block;
-      margin-right: 20px;
-    }
+/* ── Results info ── */
+.results-info {
+    max-width: 1200px; margin: 28px auto 14px; padding: 0 24px;
+    font-size: 13px; color: #c0a0a0;
+}
+.results-info strong { color: #c0392b; }
 
-    p {
-      color: rgb(246, 9, 9);
-    }
+/* ── Product Grid ── */
+.products-grid {
+    max-width: 1200px;
+    margin: 0 auto 60px;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 24px;
+}
 
-    .product_image {
-      height: 300px;
-      width: 300px;
-    }
+/* ── Product Card — premium dark design ── */
+.product-card {
+    background: #2a0e0e;
+    border: 1px solid #3d1515;
+    border-radius: 14px;
+    overflow: hidden;
+    transition: transform .3s, box-shadow .3s, border-color .3s;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 48px rgba(192,57,43,.25);
+    border-color: #c0392b;
+}
 
-    /* Image Slider Styles */
-    .slider {
-      width: 100%;
-      overflow: hidden;
-      position: relative;
-      margin: 20px 0;
-    }
+/* Image container */
+.card-img-wrap {
+    background: linear-gradient(145deg, #1a0a0a, #3d0b0b);
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+.card-img-wrap::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 40px;
+    background: linear-gradient(to top, #2a0e0e, transparent);
+}
+.card-img {
+    max-height: 190px;
+    max-width: 90%;
+    object-fit: contain;
+    transition: transform .35s ease;
+    filter: drop-shadow(0 8px 16px rgba(0,0,0,.5));
+}
+.product-card:hover .card-img { transform: scale(1.08); }
 
-    .slides {
-      display: flex;
-      transition: transform 0.5s ease-in-out;
-    }
+/* Badge */
+.card-badge {
+    position: absolute;
+    top: 12px; left: 12px;
+    background: linear-gradient(135deg, #c0392b, #8b1a12);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
 
-    .slide {
-      min-width: 100%;
-      box-sizing: border-box;
-    }
+/* Body */
+.card-body {
+    padding: 18px 18px 14px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.card-brand {
+    font-size: 10px;
+    color: #c0392b;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+.card-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #f0e0e0;
+    line-height: 1.35;
+    min-height: 42px;
+    margin-bottom: 8px;
+}
+.card-rating { font-size: 13px; color: #c9a84c; margin-bottom: 8px; }
+.card-price {
+    font-size: 18px;
+    font-weight: 700;
+    color: #c9a84c;
+    letter-spacing: .5px;
+    margin-bottom: 14px;
+}
+.card-divider { border: none; border-top: 1px solid #3d1515; margin: 0 0 14px; }
 
-    .slide img {
-      width: 50%;
-      display: block;
-    }
+/* Action buttons */
+.card-actions { display: flex; gap: 8px; margin-top: auto; }
+.btn-cart-card {
+    flex: 1;
+    background: linear-gradient(135deg, #c0392b, #8b1a12);
+    color: #fff;
+    border: none;
+    padding: 10px 0;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity .2s, transform .15s;
+    font-family: 'Outfit', Arial, sans-serif;
+}
+.btn-cart-card:hover { opacity: .85; transform: scale(1.02); }
+.btn-detail-card {
+    flex: 1;
+    background: transparent;
+    color: #c0a0a0;
+    border: 1px solid #4a1515;
+    padding: 10px 0;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    transition: background .2s, color .2s;
+    display: block;
+}
+.btn-detail-card:hover { background: #3d0b0b; color: #f0e0e0; }
 
-    .slider-button {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background-color: rgba(0, 0, 0, 0.5);
-      color: white;
-      border: none;
-      padding: 10px;
-      cursor: pointer;
-      z-index: 10;
-    }
+/* No results */
+.no-products {
+    grid-column: 1/-1;
+    text-align: center;
+    padding: 70px 20px;
+    background: #2a0e0e;
+    border-radius: 14px;
+    border: 1px solid #3d1515;
+}
+.no-products h3 { color: #c0a0a0; font-size: 20px; font-weight: 400; margin-bottom: 10px; }
+.no-products a  { color: #c0392b; }
 
-    .prev { left: 10px; }
-    .next { right: 10px; }
+/* Toast */
+.toast {
+    position: fixed; bottom: 24px; right: 24px;
+    background: #c0392b; color: #fff;
+    padding: 12px 22px; border-radius: 8px;
+    font-size: 14px; font-weight: 600;
+    box-shadow: 0 4px 20px rgba(0,0,0,.3);
+    display: none; z-index: 9999;
+    animation: slideup .3s ease;
+}
+.toast.ok { background: #27ae60; }
+@keyframes slideup { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+</style>
 
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      text-align: center;
-      background-color: #f4f4f4;
-    }
+<!-- ── Hero ── -->
+<div class="collection-hero">
+    <h1>Our <span>Collection</span></h1>
+    <p><?= $count ?> luxury timepiece<?= $count !== 1 ? 's' : '' ?> available</p>
+    <div class="hero-line"></div>
+</div>
 
-    header {
-      background-color: #fff;
-      padding: 20px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .tit {
-      color: rgb(4, 98, 88);
-    }
-
-    .btn:hover {
-      background-color: red;
-    }
-
-    .add-to-cart {
-      padding: 10px;
-      background-color: tomato;
-      color: white;
-    }
-
-    .view-details {
-      padding: 10px;
-      background-color: tomato;
-      color: white;
-    }
-
-    .product {
-      background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      transition: transform 0.3s;
-    }
-
-    .product:hover {
-      transform: scale(1.05);
-    }
-
-    .product_image {
-      max-width: 100%;
-      border-bottom: 1px solid #ddd;
-      margin-bottom: 15px;
-      padding: 25px;
-    }
-
-    .product h3 {
-      font-size: 18px;
-      margin: 10px 0;
-    }
-
-    .product p {
-      color: #e67e22;
-      font-weight: bold;
-    }
-  </style>
-</head>
-
-<body>
-
-  <header class="green">
-    <div class="header">
-      <div class="container">
-        <div class="navbar">
-          <div class="logo">
-            <a href="../index.php"><img src="../images/logo.png" width="125px"></a>
-          </div>
-          <nav>
-            <ul>
-              <li><a href="../index.php">Home</a></li>
-              <li><a href="./products.php">Products</a></li>
-              <li><a href="./blog.php">Blog</a></li>
-              <li><a href="./contact.php">Contact</a></li>
-            </ul>
-          </nav>
-          <div style="position: relative">
-            <a href="./checkout.php"><img src="../images/cart.png" alt="cart" width="30px" height="30px"
-                style="cursor: pointer;"></a>
-            <span id="cart-counter"
-              style="position: absolute; top: -10px; right: -10px; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 12px;">0</span>
-          </div>
+<!-- ── Filter Bar ── -->
+<div class="filter-wrap">
+    <form method="GET" class="filter-bar">
+        <div class="search-input">
+            <label>🔍 Search</label>
+            <input type="text" name="search" value="<?= htmlspecialchars($search) ?>" placeholder="Brand, name or keyword…">
         </div>
-      </div>
-    </div>
-  </header>
-
-  <div class="video-container">
-    <video src="../images/watch.mp4" autoplay loop muted></video>
-  </div><br>
-
-  <h2 class="tit" style="margin: 20px 0 30px;">NEW RELEASES</h2>
-  <table>
-    <tr>
-      <td class="product">
-        <img class="product_image" src="../images/watch5.png" alt="Seiko Presage">
-        <h3>Seiko Presage</h3>
-        <p>Rs 180000</p>
-        <div class="button-container">
-          <button class="btn add-to-cart">Add to Cart</button>
-          <a href="./watchdetails.php?id=1"><button class="btn view-details">View Details</button></a>
+        <div>
+            <label>Brand</label>
+            <select name="brand">
+                <option value="">All Brands</option>
+                <?php foreach ($brands as $b): ?>
+                    <option value="<?= htmlspecialchars($b['brand']) ?>" <?= $brand===$b['brand']?'selected':'' ?>>
+                        <?= htmlspecialchars($b['brand']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
         </div>
-      </td>
-      <td class="product">
-        <img class="product_image" src="../images/watch4.png" alt="Cartier Tank">
-        <h3>Cartier Tank</h3>
-        <p>Rs 530000</p>
-        <div class="button-container">
-          <button class="btn add-to-cart">Add to Cart</button>
-          <a href="./watchdetails.php?id=2"><button class="btn view-details">View Details</button></a>
+        <div>
+            <label>Min Rs.</label>
+            <input type="number" name="min" value="<?= $min_price ?: '' ?>" placeholder="0" style="width:100px;">
         </div>
-      </td>
-      <td class="product">
-        <img class="product_image" src="../images/watch3.png" alt="Rolex Sea-Dweller">
-        <h3>Rolex Sea-Dweller</h3>
-        <p>Rs. 200000</p>
-        <div class="button-container">
-          <button class="btn add-to-cart">Add to Cart</button>
-          <a href="./watchdetails.php?id=3"><button class="btn view-details">View Details</button></a>
+        <div>
+            <label>Max Rs.</label>
+            <input type="number" name="max" value="<?= $max_price ?: '' ?>" placeholder="Any" style="width:100px;">
         </div>
-      </td>
-      <td class="product">
-        <img class="product_image" src="../images/rm2.png" alt="Richard Mille RM 53-02">
-        <h3>Richard Mille RM 53-02 Tourbillon Blue Sapphire</h3>
-        <p>Rs 420000000</p>
-        <div class="button-container">
-          <button class="btn add-to-cart">Add to Cart</button>
-          <a href="./watchdetails.php?id=7"><button class="btn view-details">View Details</button></a>
+        <div>
+            <label>Sort</label>
+            <select name="sort">
+                <option value="default"    <?= $sort==='default'   ?'selected':'' ?>>Default</option>
+                <option value="price_asc"  <?= $sort==='price_asc' ?'selected':'' ?>>Price ↑</option>
+                <option value="price_desc" <?= $sort==='price_desc'?'selected':'' ?>>Price ↓</option>
+                <option value="name"       <?= $sort==='name'      ?'selected':'' ?>>Name A–Z</option>
+                <option value="rating"     <?= $sort==='rating'    ?'selected':'' ?>>Top Rated</option>
+            </select>
         </div>
-      </td>
-    </tr>
-  </table><br>
+        <button type="submit" class="btn-search">Search</button>
+        <a href="products.php" class="btn-clear">✕</a>
+    </form>
+</div>
 
-  <!-----Image Slider----->
-  <div class="slider">
-    <div class="slides">
-      <div class="slide">
-        <img src="../images/watchbanner1.jpeg" alt="Watchbanner 1" style="width: 100%;">
-      </div>
-      <div class="slide">
-        <img src="../images/watchbanner2.jpeg" alt="Watchbanner 2" style="width: 100%;">
-      </div>
-      <div class="slide">
-        <img src="../images/watchbanner3.jpeg" alt="Watchbanner 3" style="width: 100%;">
-      </div>
-      <div class="slide">
-        <img src="../images/watchbanner4.jpeg" alt="Watchbanner 4" style="width: 100%;">
-      </div>
-    </div>
-    <button class="slider-button prev" onclick="prevSlide()">&#10094;</button>
-    <button class="slider-button next" onclick="nextSlide()">&#10095;</button>
-  </div>
+<!-- Results info -->
+<div class="results-info">
+    Showing <strong><?= $count ?></strong> watch<?= $count !== 1 ? 'es' : '' ?>
+    <?php if ($search): ?> for "<strong style="color:#f0e0e0"><?= htmlspecialchars($search) ?></strong>"<?php endif; ?>
+</div>
 
-  <h2 class="tit" style="margin: 20px 0 30px;">OUR COLLECTION</h2>
-  <table>
-    <tr>
-      <td class="product">
-        <img class="product_image" src="../images/watch1.png" alt="Audemars Piguet Royal Oak">
-        <h3>Audemars Piguet Royal Oak</h3>
-        <p>Rs 1580000</p>
-        <div class="button-container">
-          <button class="btn add-to-cart">Add to Cart</button>
-          <a href="./watchdetails.php?id=5"><button class="btn view-details">View Details</button></a>
+<!-- ── Product Grid ── -->
+<div class="products-grid">
+    <?php if (!$watches || $count === 0): ?>
+        <div class="no-products">
+            <h3>No watches found</h3>
+            <p><a href="products.php">Browse all products</a></p>
         </div>
-      </td>
-      <td class="product">
-        <img class="product_image" src="../images/rm1.png" alt="Richard Mille RM 11">
-        <h3>Richard Mille RM 11 Chronograph</h3>
-        <p>Rs 2100000</p>
-        <div class="button-container">
-          <button class="btn add-to-cart">Add to Cart</button>
-          <a href="./watchdetails.php?id=6"><button class="btn view-details">View Details</button></a>
+    <?php else: ?>
+        <?php while ($w = $watches->fetch_assoc()):
+            $stars = round((float)($w['rating'] ?? 0));
+            $star_str = str_repeat('★', $stars) . str_repeat('☆', 5 - $stars);
+        ?>
+        <div class="product-card">
+            <?php if (!empty($w['is_featured'])): ?>
+                <div class="card-badge">Featured</div>
+            <?php elseif (!empty($w['is_latest'])): ?>
+                <div class="card-badge" style="background:linear-gradient(135deg,#c9a84c,#8b6914);">New</div>
+            <?php endif; ?>
+
+            <a href="watchdetails.php?id=<?= $w['id'] ?>">
+                <div class="card-img-wrap">
+                    <img class="card-img"
+                         src="../images/<?= htmlspecialchars($w['image']) ?>"
+                         alt="<?= htmlspecialchars($w['name']) ?>">
+                </div>
+            </a>
+            <div class="card-body">
+                <div class="card-brand"><?= htmlspecialchars($w['brand']) ?></div>
+                <div class="card-name"><?= htmlspecialchars($w['name']) ?></div>
+                <?php if ($stars > 0): ?>
+                    <div class="card-rating"><?= $star_str ?> <span style="color:#888;font-size:11px;"><?= number_format((float)$w['rating'], 1) ?></span></div>
+                <?php endif; ?>
+                <div class="card-price">Rs. <?= number_format($w['price']) ?></div>
+                <hr class="card-divider">
+                <div class="card-actions">
+                    <form method="POST" action="cart_actions.php" style="flex:1">
+                        <input type="hidden" name="action"   value="add">
+                        <input type="hidden" name="watch_id" value="<?= $w['id'] ?>">
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit" class="btn-cart-card">🛒 Add to Cart</button>
+                    </form>
+                    <a href="watchdetails.php?id=<?= $w['id'] ?>" class="btn-detail-card">Details</a>
+                </div>
+            </div>
         </div>
-      </td>
-      <td class="product">
-        <img class="product_image" src="../images/tag1.png" alt="TAG Heuer Aquaracer">
-        <h3>TAG Heuer Aquaracer 300M Professional</h3>
-        <p>Rs 420000</p>
-        <div class="button-container">
-          <button class="btn add-to-cart">Add to Cart</button>
-          <a href="./watchdetails.php?id=11"><button class="btn view-details">View Details</button></a>
-        </div>
-      </td>
-      <td class="product">
-        <img class="product_image" src="../images/watch10.png" alt="Billionaire III">
-        <h3>Billionaire III</h3>
-        <p>Rs 1050000000</p>
-        <div class="button-container">
-          <button class="btn add-to-cart">Add to Cart</button>
-          <a href="./watchdetails.php?id=8"><button class="btn view-details">View Details</button></a>
-        </div>
-      </td>
-    </tr>
-  </table><br>
+        <?php endwhile; ?>
+    <?php endif; ?>
+</div>
 
-  <h2 class="tit" style="margin: 20px 0 30px;">EXCEPTIONAL TIMEPIECE</h2>
-  <table>
-    <tr>
-      <td class="product">
-        <img class="product_image" src="../images/watch6.png" alt="Casio G-Shock">
-        <h3>Casio G-Shock GA-2100</h3>
-        <p>Rs 11500</p>
-        <div class="button-container">
-          <button class="btn add-to-cart">Add to Cart</button>
-          <a href="./watchdetails.php?id=9"><button class="btn view-details">View Details</button></a>
-        </div>
-      </td>
-      <td class="product">
-        <img class="product_image" src="../images/watch8.png" alt="Seiko 5 Sports">
-        <h3>Seiko 5 Sports</h3>
-        <p>Rs 21000</p>
-        <div class="button-container">
-          <button class="btn add-to-cart">Add to Cart</button>
-          <a href="./watchdetails.php?id=10"><button class="btn view-details">View Details</button></a>
-        </div>
-      </td>
-      <td class="product">
-        <img class="product_image" src="../images/watch2.png" alt="Privé Cloche de Cartier">
-        <h3>Privé Cloche de Cartier</h3>
-        <p>Rs 1000000</p>
-        <div class="button-container">
-          <button class="btn add-to-cart">Add to Cart</button>
-          <a href="./watchdetails.php?id=4"><button class="btn view-details">View Details</button></a>
-        </div>
-      </td>
-      <td class="product">
-        <img class="product_image" src="../images/tag2.png" alt="TAG Heuer Carrera Seafarer">
-        <h3>TAG Heuer Carrera Chronograph Seafarer × Hodinkee</h3>
-        <p>Rs 840000</p>
-        <div class="button-container">
-          <button class="btn add-to-cart">Add to Cart</button>
-          <a href="./watchdetails.php?id=12"><button class="btn view-details">View Details</button></a>
-        </div>
-      </td>
-    </tr>
-  </table><br>
+<div class="toast" id="toast"></div>
 
-  <!-------footer------>
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-section about">
-        <h3>About Us</h3>
-        <p>
-          We're passionate about watches and believe they're more than just timepieces—they're a reflection of your
-          style. Our collection combines timeless elegance with modern design, so you can find the perfect watch for any
-          occasion.
-        </p>
-      </div>
-      <div class="footer-section links">
-        <h3>Quick Links</h3>
-        <ul>
-          <li><a href="../index.php">Home</a></li>
-          <li><a href="./products.php">Products</a></li>
-          <li><a href="./blog.php">Blog</a></li>
-          <li><a href="./contact.php">Contact</a></li>
-        </ul>
-      </div>
-      <div class="footer-section contact">
-        <h3>Contact Us</h3>
-        <p>📍 Balkumari, Lalitpur</p>
-        <p>📞 +977 9812345678</p>
-        <p>📧 pratyushisneupane@gmail.com</p>
-        <p>For Further Queries</p>
-        <a href="./contact.php" style="color: gold;">Click Here!</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      &copy; 2025 WatchStore |
-    </div>
-  </footer>
-
-  <script>
-    let currentSlide = 0;
-    const slides = document.querySelectorAll('.slide');
-    const totalSlides = slides.length;
-    const sliderContainer = document.querySelector('.slides');
-
-    const firstClone = slides[0].cloneNode(true);
-    const lastClone = slides[totalSlides - 1].cloneNode(true);
-
-    sliderContainer.appendChild(firstClone);
-    sliderContainer.insertBefore(lastClone, slides[0]);
-
-    let index = 1;
-    const slideWidth = slides[0].clientWidth;
-
-    sliderContainer.style.transform = `translateX(${-index * slideWidth}px)`;
-
-    function moveSlide(direction) {
-      if (direction === "next") {
-        index++;
-      } else {
-        index--;
-      }
-
-      sliderContainer.style.transition = "transform 0.5s ease-in-out";
-      sliderContainer.style.transform = `translateX(${-index * slideWidth}px)`;
-
-      setTimeout(() => {
-        if (index >= totalSlides + 1) {
-          index = 1;
-          sliderContainer.style.transition = "none";
-          sliderContainer.style.transform = `translateX(${-index * slideWidth}px)`;
-        } else if (index <= 0) {
-          index = totalSlides;
-          sliderContainer.style.transition = "none";
-          sliderContainer.style.transform = `translateX(${-index * slideWidth}px)`;
-        }
-      }, 500);
-    }
-
-    function nextSlide() { moveSlide("next"); }
-    function prevSlide() { moveSlide("prev"); }
-
-    setInterval(nextSlide, 3000);
-  </script>
-
-</body>
-</html>
+<?php include 'includes/footer.php'; ?>

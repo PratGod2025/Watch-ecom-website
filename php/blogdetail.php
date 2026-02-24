@@ -1,153 +1,119 @@
-<?php include '../config.php'; ?>
 <?php
-$id = intval($_GET['id']);
+session_start();
+require_once '../config.php';
+
+$id = intval($_GET['id'] ?? 0);
 $result = $conn->query("SELECT * FROM blogs WHERE id = $id");
-$blog = $result->fetch_assoc();
-if (!$blog) { echo "Blog not found!"; exit; }
+$blog = $result ? $result->fetch_assoc() : null;
+
+if (!$blog) { header('Location: blog.php'); exit; }
+
+$page_title = htmlspecialchars($blog['title']) . " - Time Hub Blog";
+$css_prefix = '../';
+include 'includes/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title><?= htmlspecialchars($blog['title']) ?> - Time Hub Blog</title>
-  <link rel="stylesheet" href="../css/style.css">
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Arial, sans-serif; background: #f4f4f4; }
-
-    .header { background: #202c2f; }
-    .navbar { display: flex; align-items: center; padding: 15px 20px; }
-    nav { flex: 1; text-align: right; }
-    nav ul { display: inline-block; list-style: none; }
-    nav ul li { display: inline-block; margin-right: 20px; }
-    nav ul li a { color: #fff; text-decoration: none; }
-    nav ul li a:hover { color: #6EC6CA; }
-
+<style>
+    body { background: #1a0a0a; color: #f0e0e0; font-family: 'Outfit', Arial, sans-serif; margin: 0; }
+    
     .blog-detail-container {
-      max-width: 900px;
-      margin: 50px auto;
-      padding: 0 20px;
-    }
-
-    .blog-detail-card {
-      background: #fff;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    }
-
-    .blog-detail-card img {
-      width: 100%;
-      height: 400px;
-      object-fit: cover;
-    }
-
-    .blog-detail-body { padding: 40px; }
-
-    .blog-category {
-      display: inline-block;
-      background: #6EC6CA;
-      color: white;
-      font-size: 11px;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      padding: 4px 12px;
-      border-radius: 20px;
-      margin-bottom: 15px;
-    }
-
-    .blog-detail-body h1 {
-      font-size: 32px;
-      color: #202c2f;
-      margin-bottom: 15px;
-      line-height: 1.4;
-    }
-
-    .blog-meta {
-      font-size: 13px;
-      color: #999;
-      margin-bottom: 25px;
-      padding-bottom: 25px;
-      border-bottom: 1px solid #eee;
-    }
-
-    .blog-content {
-      font-size: 16px;
-      line-height: 1.9;
-      color: #555;
-      white-space: pre-line;
+        max-width: 1000px;
+        margin: 50px auto;
+        padding: 0 20px;
     }
 
     .back-btn {
-      display: inline-block;
-      margin-bottom: 25px;
-      background: #202c2f;
-      color: white;
-      padding: 8px 18px;
-      border-radius: 20px;
-      text-decoration: none;
-      font-size: 13px;
-      transition: background 0.3s;
+        display: inline-block;
+        margin-bottom: 30px;
+        background: rgba(42,14,14,0.6);
+        color: #c0a0a0;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        border: 1px solid rgba(192,57,43,0.3);
+        transition: all 0.3s;
     }
-    .back-btn:hover { background: #6EC6CA; }
+    .back-btn:hover { background: #c0392b; color: #fff; box-shadow: 0 0 15px rgba(192,57,43,0.4); }
 
-    .footer {
-      background: #202c2f;
-      color: #ccc;
-      padding: 40px 20px 20px;
-      margin-top: 60px;
+    .blog-detail-card {
+        background: rgba(42,14,14,0.8);
+        backdrop-filter: blur(12px);
+        border-radius: 20px;
+        overflow: hidden;
+        border: 1px solid rgba(192,57,43,0.3);
+        box-shadow: 0 25px 60px rgba(0,0,0,0.6);
     }
-    .footer-bottom {
-      text-align: center;
-      margin-top: 20px;
-      padding-top: 20px;
-      border-top: 1px solid #444;
-      font-size: 13px;
-      color: #888;
+
+    .blog-detail-card img {
+        width: 100%;
+        height: 500px;
+        object-fit: cover;
+        border-bottom: 2px solid #c0392b;
     }
-  </style>
-</head>
-<body>
 
-  <div class="header">
-    <div class="container">
-      <div class="navbar">
-        <a href="../index.php">
-          <img class="logo" src="../images/logo.png" width="125px">
-        </a>
-        <nav>
-          <ul>
-            <li><a href="../index.php">Home</a></li>
-            <li><a href="./products.php">Products</a></li>
-            <li><a href="./blog.php">Blog</a></li>
-            <li><a href="./contact.php">Contact</a></li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-  </div>
+    .blog-detail-body { padding: 60px; }
 
-  <div class="blog-detail-container">
-    <a href="./blog.php" class="back-btn">← Back to Blog</a>
+    .blog-category {
+        display: inline-block;
+        background: #c0392b;
+        color: white;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        padding: 6px 15px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+    }
+
+    .blog-detail-body h1 {
+        font-size: 42px;
+        color: #fff;
+        margin-bottom: 20px;
+        line-height: 1.2;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .blog-meta {
+        font-size: 15px;
+        color: #9a7070;
+        margin-bottom: 40px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid rgba(192,57,43,0.2);
+        display: flex;
+        gap: 20px;
+    }
+
+    .blog-content {
+        font-size: 18px;
+        line-height: 1.9;
+        color: #c0a0a0;
+        white-space: pre-line;
+    }
+
+    @media (max-width: 768px) {
+        .blog-detail-body { padding: 30px; }
+        .blog-detail-body h1 { font-size: 32px; }
+        .blog-detail-card img { height: 300px; }
+    }
+</style>
+
+<div class="blog-detail-container">
+    <a href="./blog.php" class="back-btn">← Back to Stories</a>
     <div class="blog-detail-card">
-      <img src="../images/blog/<?= htmlspecialchars($blog['image']) ?>" alt="<?= htmlspecialchars($blog['title']) ?>">
-      <div class="blog-detail-body">
-        <span class="blog-category"><?= htmlspecialchars($blog['category']) ?></span>
-        <h1><?= htmlspecialchars($blog['title']) ?></h1>
-        <div class="blog-meta">
-          📅 <?= htmlspecialchars($blog['published_date']) ?> &nbsp;|&nbsp; ✍️ <?= htmlspecialchars($blog['author']) ?>
+        <img src="../images/blog/<?= htmlspecialchars($blog['image']) ?>" alt="<?= htmlspecialchars($blog['title']) ?>">
+        <div class="blog-detail-body">
+            <span class="blog-category"><?= htmlspecialchars($blog['category']) ?></span>
+            <h1><?= htmlspecialchars($blog['title']) ?></h1>
+            <div class="blog-meta">
+                <span>📅 <?= date('M d, Y', strtotime($blog['published_date'])) ?></span>
+                <span>✍️ <?= htmlspecialchars($blog['author']) ?></span>
+            </div>
+            <div class="blog-content"><?= nl2br(htmlspecialchars($blog['content'])) ?></div>
         </div>
-        <div class="blog-content"><?= nl2br(htmlspecialchars($blog['content'])) ?></div>
-      </div>
     </div>
-  </div>
+</div>
 
-  <footer class="footer">
-    <div class="footer-bottom">
-      &copy; 2025 WatchStore | Time Hub
-    </div>
-  </footer>
-
-</body>
-</html>
+<?php include 'includes/footer.php'; ?>

@@ -1,238 +1,235 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta name="description" content="contact page of watch website">
-    <meta name="keywords" content="contact us, watches, Soura">
-    <title>Contact Page</title>
-</head>
+<?php
+session_start();
+require_once '../config.php';
+$page_title = 'Contact Us';
+$css_prefix = '../';
+include 'includes/header.php';
+?>
 <style>
-    body {
-        margin: 0;
-        /* Removes default margin for the body */
-        font-family: Arial;
-        background-color: #f9f9f9;
-    }
-
-    .container {
+    body { background: #1a0a0a; color: #f0e0e0; font-family: 'Outfit', Arial, sans-serif; margin: 0; }
+    
+    .contact-container {
         display: flex;
-        /* Uses flexbox layout for alignment */
         justify-content: center;
-        /* Centers the content horizontally */
         align-items: center;
-        /* Centers the content vertically */
-        height: 600px;
-        padding: 20px;
+        min-height: 80vh;
+        padding: 60px 20px;
     }
 
-    .card {
+    .contact-card {
         display: flex;
-        /* Uses flexbox layout for the card */
-        width: 80%;
-        max-width: 1000px;
-        /* Limits the maximum width of the card */
-        background: #fff;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        /* Rounds the corners of the card */
+        width: 100%;
+        max-width: 1100px;
+        background: rgba(42,14,14,0.8);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+        border-radius: 20px;
+        border: 1px solid rgba(192,57,43,0.3);
         overflow: hidden;
-        /* Prevents content from overflowing the card */
+        flex-wrap: wrap;
     }
 
     .form-section {
-        flex: 1;
-        /* Ensures the form section takes up equal space */
-        background-color: #2575fc;
-        /* Sets the background color of the form section */
-        color: #fff;
-        /* Sets the text color to white */
-        padding: 30px;
-        /* Adds padding to the form section */
+        flex: 1.5;
+        min-width: 320px;
+        background: linear-gradient(135deg, #2a0e0e, #1a0a0a);
+        padding: 50px;
+        border-right: 1px solid rgba(192,57,43,0.2);
     }
 
     .form-section h2 {
-        margin-bottom: 20px;
-        /* Adds space below the header */
+        margin-bottom: 30px;
+        color: #fff;
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: 1px;
     }
+
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 700; color: #c0a0a0; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
 
     .form-section input,
     .form-section textarea {
         width: 100%;
-        padding: 10px;
-        margin: 10px 0;
-        border: none;
-        /* Removes borders around the input fields */
-        border-radius: 4px;
-        /* Rounds the corners of the input fields */
-        font-size: 16px;
-        /* Sets font size inside input fields */
+        padding: 12px 15px;
+        background: rgba(26,10,10,0.8);
+        border: 1px solid rgba(192,57,43,0.3);
+        border-radius: 8px;
+        font-size: 15px;
+        color: #fff;
+        font-family: 'Outfit', sans-serif;
+        transition: all 0.3s;
         resize: none;
-        /* Disables resizing of the textarea */
     }
 
-    .form-section input[type="radio"] {
-        width: auto;
-        /* Makes the radio buttons their default size */
-        margin-right: 10px;
-        /* Adds space to the right of the radio buttons */
+    .form-section input:focus,
+    .form-section textarea:focus {
+        border-color: #c0392b;
+        outline: none;
+        box-shadow: 0 0 10px rgba(192,57,43,0.3);
     }
 
-    .form-section label {
-        font-size: 16px;
-        /* Sets font size for labels */
-    }
+    .gender-group { display: flex; gap: 20px; margin: 10px 0; }
+    .gender-option { display: flex; align-items: center; gap: 8px; color: #f0e0e0; cursor: pointer; font-size: 15px; }
+    .gender-option input { width: auto; margin: 0; }
 
-    .form-section button {
+    .btn-send {
         display: block;
-        /* Makes the button a block-level element */
         width: 100%;
-        padding: 10px;
-        background-color: #ff007f;
+        padding: 15px;
+        background: linear-gradient(135deg, #c0392b, #8b1a12);
         border: none;
-        /* Removes border around the button */
         color: #fff;
         font-size: 16px;
-        border-radius: 4px;
-        /* Rounds the corners of the button */
+        font-weight: 700;
+        border-radius: 10px;
         cursor: pointer;
-        /* Changes the cursor to a pointer when hovered */
-        margin-top: 10px;
-        /* Adds margin to the top of the button */
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        transition: all 0.3s;
+        margin-top: 25px;
     }
 
-    .form-section button:hover {
-        background-color: #e6006f;
-        /* Changes button color on hover */
+    .btn-send:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(192,57,43,0.4);
     }
 
     .info-section {
         flex: 1;
-        /* Ensures the info section takes up equal space */
-        padding: 30px;
-        position: relative;
-        /* Allows absolute positioning for elements inside */
+        min-width: 300px;
+        padding: 50px;
+        background: rgba(42,14,14,0.4);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
     .info-section h2 {
-        margin-bottom: 20px;
-        /* Adds space below the header */
+        margin-bottom: 30px;
+        color: #c9a84c;
+        font-size: 24px;
+        font-weight: 700;
     }
 
     .info-section p {
-        margin: 10px 0;
-        /* Adds margin between paragraphs */
+        margin-bottom: 20px;
         font-size: 16px;
-        /* Sets font size for paragraphs */
+        color: #c0a0a0;
+        display: flex;
+        align-items: center;
+        gap: 15px;
     }
 
-    .back-button {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        background-color: #606060;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: background-color 0.3s;
-    }
+    .info-section p span { color: #c0392b; font-size: 20px; }
 
-    .back-button:hover {
-        background-color: #ababab;
+    @media (max-width: 768px) {
+        .form-section { border-right: none; border-bottom: 1px solid rgba(192,57,43,0.2); }
     }
 </style>
 
-<body>
-    <a href="../index.php"> <button class="back-button">&#8592; Back</button></a>
-    <div class="container">
-        <div class="card">
-            <div class="form-section">
-                <h2>Send us a Message</h2>
-                <form name="contactForm" onsubmit="return validateForm()">
-                    <!-- Form submission triggers validateForm function -->
-                    <div class="form-group">
-                        <label for="name">Name : </label>
-                        <input type="text" id="name" name="name" placeholder="Full name" required>
-                        <!-- Name input field -->
+<?php
+    $success = false;
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $name    = trim($_POST['name']);
+        $email   = trim($_POST['email']);
+        $phone   = trim($_POST['phone']);
+        $gender  = $_POST['gender'];
+        $message = trim($_POST['message']);
+
+        if ($name && $email && $phone && $message) {
+            $stmt = $conn->prepare("INSERT INTO contact_messages (name, email, phone, gender, message) VALUES (?, ?, ?, ?, ?)");
+            $stmt->bind_param("sssss", $name, $email, $phone, $gender, $message);
+            if ($stmt->execute()) {
+                $success = true;
+            }
+        }
+    }
+?>
+
+<div class="contact-container">
+    <div class="contact-card">
+        <div class="form-section">
+            <h2>Send us a Message</h2>
+            
+            <?php if ($success): ?>
+                <div style="background: rgba(39,174,96,0.2); color: #a0f0b0; border-left: 4px solid #27ae60; padding: 15px; border-radius: 8px; margin-bottom: 25px;">
+                    ✓ Thank you! Your message has been sent successfully.
+                </div>
+            <?php endif; ?>
+
+            <form name="contactForm" method="POST" onsubmit="return validateForm()">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" placeholder="Full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Your email address" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="10-digit number" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Gender</label>
+                    <div class="gender-group">
+                        <label class="gender-option">
+                            <input type="radio" name="gender" value="male" checked> Male
+                        </label>
+                        <label class="gender-option">
+                            <input type="radio" name="gender" value="female"> Female
+                        </label>
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        <label for="email">Email : </label>
-                        <input type="email" id="email" name="email" placeholder="Your email address" required>
-                        <!-- Email input field -->
-                    </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" placeholder="Leave a message here." required></textarea>
+                </div>
 
-                    <div class="form-group">
-                        <label for="phone">Phone Number : </label>
-                        <input type="tel" id="phone" name="phone" placeholder="10-digit number" required>
-                        <!-- Phone input field -->
-                    </div>
+                <button type="submit" class="btn-send">Send Message →</button>
+            </form>
+        </div>
 
-                    <div class="form-group">
-                        <label>Gender : </label>
-                        <div class="gender-group">
-                            <label class="gender-option">
-                                <input type="radio" name="gender" value="male" checked> Male <!-- Male radio button -->
-                            </label>
-                            <label class="gender-option">
-                                <input type="radio" name="gender" value="female"> Female <!-- Female radio button -->
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="message">Message : </label>
-                        <textarea id="message" name="message" placeholder="Leave a message here." required></textarea>
-                        <!-- Message textarea -->
-                    </div>
-
-                    <button type="submit">Send Message</button> <!-- Submit button -->
-                </form>
-            </div>
-
-            <div class="info-section">
-                <h2>Contact Us</h2>
-                <p>📍 Balkumari, Lalitpur</p> <!-- Address -->
-                <p>📞 +977 9812345678</p> <!-- Phone number -->
-                <p>📧 pratyushisneupane@gmail.com</p> <!-- Email -->
-                <p>🌐 </p> <!-- Website -->
-            </div>
+        <div class="info-section">
+            <h2>Contact Us</h2>
+            <p><span>📍</span> Balkumari, Lalitpur, Nepal</p>
+            <p><span>📞</span> +977 9812345678</p>
+            <p><span>📧</span> pratyushisneupane@gmail.com</p>
+            <p><span>🌐</span> www.timehub.com.np</p>
         </div>
     </div>
+</div>
 
-    <script>
-        // Function to validate form inputs before submission
-        function validateForm() {
-            const name = document.forms["contactForm"]["name"].value.trim(); // Gets the name input value
-            const email = document.forms["contactForm"]["email"].value.trim(); // Gets the email input value
-            const phone = document.forms["contactForm"]["phone"].value.trim(); // Gets the phone input value
-            const message = document.forms["contactForm"]["message"].value.trim(); // Gets the message input value
+<script>
+    function validateForm() {
+        // Form is handled by PHP now, but we keep JS for instant feedback
+        const name = document.forms["contactForm"]["name"].value.trim();
+        const email = document.forms["contactForm"]["email"].value.trim();
+        const phone = document.forms["contactForm"]["phone"].value.trim();
+        const message = document.forms["contactForm"]["message"].value.trim();
 
-            if (!name || !email || !phone || !message) { // Checks if all required fields are filled
-                alert("Please fill in all required fields");
-                return false; // Prevents form submission if any field is empty
-            }
-
-            if (isNaN(phone)) { // Checks if the phone number contains non-numeric characters
-                alert("Please enter a valid digits");
-                return false; // Prevents form submission
-            }
-            if (phone.length !== 10) { // Checks if the phone number is exactly 10 digits long
-                alert("Please enter a valid 10-digit phone number");
-                return false; // Prevents form submission
-            }
-
-            if (!email.includes("@")) { // Checks if the email contains '@'
-                alert("Please enter a valid email address");
-                return false; // Prevents form submission
-            }
-
-            alert("Message sent successfully!"); // Shows success message on successful validation
-            return true; // Allows form submission
+        if (!name || !email || !phone || !message) {
+            alert("Please fill in all required fields");
+            return false;
         }
-    </script>
-</body>
 
-</html>
+        if (isNaN(phone) || phone.length !== 10) {
+            alert("Please enter a valid 10-digit phone number");
+            return false;
+        }
+
+        if (!email.includes("@")) {
+            alert("Please enter a valid email address");
+            return false;
+        }
+
+        return true; 
+    }
+</script>
+
+<?php include 'includes/footer.php'; ?>
